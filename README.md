@@ -12,7 +12,6 @@ This project aims to use the VGG16 network [1][2] to solve the problem of style 
 ## Use instructions
 
 
----
 
 ## References
 [1] Karen Simonyan and Andrew Zisserman, *Very Deep Convolutional Networks for Large-Scale Image Recognition*. Available https://arxiv.org/abs/1409.1556
