@@ -173,4 +173,5 @@ cython_debug/
 
 ### Project ###
 
-data/*
+data/
+logs/
