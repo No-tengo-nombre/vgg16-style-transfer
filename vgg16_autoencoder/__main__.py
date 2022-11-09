@@ -48,15 +48,22 @@ parser.add_argument(
     action="store_true",
     help="Run in verbose mode.",
 )
+parser.add_argument(
+    "-b",
+    "--batch-size",
+    action="store",
+    default=1,
+    help="Set the batch size.",
+)
 
 args = parser.parse_args()
 setup_logger(args.quiet, args.debug, args.verbose, args.log)
 
 
 if args.train:
-    LOGGER.info("Running in training mode.")
+    LOGGER.info(f"Running in training mode with batch size {int(args.batch_size)}.")
     LEARNING_RATE = 5e-4
-    BATCH_SIZE = 10
+    BATCH_SIZE = int(args.batch_size)
     EPOCHS = 1
     USE_GPU = True
     NORM_MEAN = (0.485, 0.456, 0.406)
