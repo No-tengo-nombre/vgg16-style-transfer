@@ -1,7 +1,7 @@
 import torch
 
 
-#TODO: Refactor this code
+# TODO: Refactor this code
 def wct(alpha, cf, sf, s1f=None, beta=None):
     # content image whitening
     cf = cf.double()
@@ -14,7 +14,8 @@ def wct(alpha, cf, sf, s1f=None, beta=None):
     cfv = cfv - c_mean  # subtract mean element-wise
 
     c_covm = torch.mm(cfv, cfv.t()).div(
-        (c_width * c_height) - 1)  # construct covariance matrix
+        (c_width * c_height) - 1
+    )  # construct covariance matrix
     # singular value decomposition
     c_u, c_e, c_v = torch.svd(c_covm, some=False)
 
@@ -108,7 +109,8 @@ def wct_mask(cf, sf):
             break
     c_d = (c_e[0:k_c]).pow(-0.5)
     whitened = torch.mm(
-        torch.mm(torch.mm(c_v[:, 0:k_c], torch.diag(c_d)), (c_v[:, 0:k_c].t())), cf)
+        torch.mm(torch.mm(c_v[:, 0:k_c], torch.diag(c_d)), (c_v[:, 0:k_c].t())), cf
+    )
 
     sf = sf.double()
     sf_sizes = sf.size()
@@ -126,8 +128,9 @@ def wct_mask(cf, sf):
             s_k = i
             break
     s_d = (s_e[0:s_k]).pow(0.5)
-    ccsf = torch.mm(torch.mm(
-        torch.mm(s_v[:, 0:s_k], torch.diag(s_d)), s_v[:, 0:s_k].t()), whitened)
+    ccsf = torch.mm(
+        torch.mm(torch.mm(s_v[:, 0:s_k], torch.diag(s_d)), s_v[:, 0:s_k].t()), whitened
+    )
 
     ccsf += s_mean.resize_as_(ccsf)
     return ccsf.float()
