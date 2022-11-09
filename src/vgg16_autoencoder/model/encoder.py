@@ -1,9 +1,12 @@
 from torch import nn
 from torchvision import models
 
+from vgg16_autoencoder.logger import LOGGER
+
 
 class VGG16Encoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
+        LOGGER.info("Initializing encoder.")
         super().__init__()
         all_layers = (
             models

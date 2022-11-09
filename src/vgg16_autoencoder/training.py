@@ -5,6 +5,7 @@ from tqdm import tqdm
 import numpy as np
 
 from .dataset import VGG16DecoderImageDataloader
+from vgg16_autoencoder.logger import LOGGER
 
 
 def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
@@ -21,8 +22,8 @@ def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
 
 
 def evaluate(val_loader, model, encoder, criterion, use_gpu):
+    LOGGER.info("Evaluating model.")
     cumulative_loss = 0
-    data_count = 0
 
     for x_val, y_val in val_loader:
         if use_gpu:
@@ -34,12 +35,14 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
         cumulative_loss += loss.item()
 
+    LOGGER.debug(f"Validation loss: {cumulative_loss / len(val_loader):.4f}.")
     return cumulative_loss / len(val_loader)
 
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 batch_size, lr, encoder, n_evaluations_per_epoch=6,
                 use_gpu=False, loader_kwargs=None):
+    LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
         encoder = encoder.cuda()
@@ -48,6 +51,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         loader_kwargs = {}
 
     # Dataloaders
+    LOGGER.info("Generating dataloaders.")
     train_loader = VGG16DecoderImageDataloader(
         train_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
     )
@@ -68,6 +72,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
     train_loss = None
     val_loss = None
 
+    LOGGER.info("Starting training.")
     for epoch in range(epochs):
         # Metrics
         cumulative_train_loss = 0
@@ -110,6 +115,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
 
 
 def show_curves(curves):
+    LOGGER.info("Showing training curves.")
     fig, ax = plt.subplots(1, 1, figsize=(13, 5))
     fig.set_facecolor("white")
 

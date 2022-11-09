@@ -2,9 +2,12 @@ import torch
 from torch import nn
 import matplotlib.pyplot as plt
 
+from vgg16_autoencoder.logger import LOGGER
+
 
 class VGG16DecoderLossFunction(nn.Module):
     def __init__(self, weight=1, show_progress=False, show_images=False, use_gpu=False):
+        LOGGER.info("Initializing loss function.")
         super().__init__()
         self.weight = weight
         self.show_progress = show_progress
@@ -23,6 +26,7 @@ class VGG16DecoderLossFunction(nn.Module):
         image_loss = torch.pow(torch.linalg.norm(input_image - recon_image), 2)
         feature_loss = torch.pow(torch.linalg.norm(input_features - recon_features), 2)
         total_loss = image_loss + self.weight * feature_loss
+        LOGGER.debug(f"Calculated loss {total_loss:.4f}.")
 
         if self.show_progress:
             if self.show_images:

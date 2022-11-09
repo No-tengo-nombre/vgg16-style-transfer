@@ -1,8 +1,11 @@
 from torch import nn
 
+from vgg16_autoencoder.logger import LOGGER
+
 
 class VGG16Decoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
+        LOGGER.info("Initializing decoder.")
         super().__init__()
         all_layers = nn.Sequential(
             nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
