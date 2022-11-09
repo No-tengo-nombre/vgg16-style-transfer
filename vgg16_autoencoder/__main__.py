@@ -31,10 +31,9 @@ parser.add_argument(
     help="Run in debug mode.",
 )
 parser.add_argument(
-    "-L",
     "--log",
-    action="store_true",
-    help="Generate log files for the current run.",
+    action="store",
+    help="Generate log files for the current run in the given directory.",
 )
 parser.add_argument(
     "-q",
