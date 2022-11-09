@@ -10,7 +10,7 @@ log_fmt = logging.Formatter(
     datefmt="%Y-%m-%d|%H:%M:%S",
 )
 
-def setup_logger(quiet, debug, verbose, save_log):
+def setup_logger(quiet, debug, verbose, log_dir):
     global LOGGER
 
     if not quiet:
@@ -25,11 +25,11 @@ def setup_logger(quiet, debug, verbose, save_log):
             str_hdl.setLevel(logging.WARNING)
         LOGGER.addHandler(str_hdl)
 
-    if save_log:
+    if log_dir:
         # File logger
         now = datetime.now()
         file_name = f"{now.year}{now.month:02}{now.day:02}_{now.hour:02}{now.minute:02}{now.second:02}"
-        file_path = os.path.join("logs", f"{file_name}.txt")
+        file_path = os.path.join(log_dir, f"{file_name}.txt")
         file_hdl = logging.FileHandler(file_path, encoding="utf-8")
         file_hdl.setFormatter(log_fmt)
         file_hdl.setLevel(logging.DEBUG)
