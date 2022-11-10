@@ -75,7 +75,8 @@ parser.add_argument(
 parser.add_argument(
     "-S",
     "--save-weights",
-    action="store_true",
+    action="store",
+    default="",
     help="Save the model's weights.",
 )
 parser.add_argument(
@@ -99,6 +100,14 @@ parser.add_argument(
     "--never-save",
     action="store_true",
     help="Never save the model.",
+)
+parser.add_argument(
+    "-D",
+    "--depth",
+    action="store",
+    type=int,
+    default=5,
+    help="Set the depth of the encoder and decoder.",
 )
 
 args = parser.parse_args()
@@ -126,7 +135,7 @@ if args.train:
     ])
 
     LOGGER.info("Creating encoder.")
-    vgg_encoder = VGG16Encoder(use_gpu=USE_GPU)
+    vgg_encoder = VGG16Encoder(depth=args.depth, use_gpu=USE_GPU)
 
     LOGGER.info("Creating datasets.")
     LOGGER.debug("Creating untransformed dataset.")
@@ -172,23 +181,23 @@ if args.train:
         path = args.from_weights
         if path is None:
             LOGGER.info("Setting decoder weights to the best ones.")
-            path = os.path.join(PATH_TO_WEIGHTS, "best.pt")
+            path = os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt")
 
         try:
-            vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
+            vgg_decoder = VGG16Decoder.from_state_dict(depth=args.depth, path=path, use_gpu=USE_GPU)
             with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
                 start_curves = toml.load(f)["loss_evolution"]
         except FileNotFoundError as e:
-            if path == os.path.join(PATH_TO_WEIGHTS, "best.pt"):
+            if path == os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt"):
                 LOGGER.warning("Best model was not found (maybe it was deleted?). Initializing from a scratch.")
-                vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+                vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
                 start_curves = None
             else:
                 raise e
 
     else:
         LOGGER.info("Initializing decoder from scratch.")
-        vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+        vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
         start_curves = None
 
 
