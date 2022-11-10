@@ -3,9 +3,15 @@ import time
 import torch
 from tqdm import tqdm
 import numpy as np
+from datetime import datetime
+import os
+import toml
 
 from .dataset import VGG16DecoderImageDataloader
 from vgg16_autoencoder.logger import LOGGER
+
+
+PATH_TO_WEIGHTS = os.path.join("vgg16_autoencoder", "weights")
 
 
 def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
@@ -40,8 +46,8 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
-                batch_size, lr, encoder, n_evaluations_per_epoch=6,
-                use_gpu=False, loader_kwargs=None):
+                batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
+                save_weights=True):
     LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
@@ -111,6 +117,36 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         curves["val_loss"].append(val_loss)
 
     model = model.cpu()
+
+    # Save the model
+    if save_weights:
+        now = datetime.now()
+        file_name = os.path.join(PATH_TO_WEIGHTS, f"{now.year}{now.month:02}{now.day:02}_{now.hour:02}{now.minute:02}{now.second:02}.pt")
+        data_dict = {
+            "parameters": {
+                "epochs": epochs,
+                "criterion": criterion.__class__.__name__,
+                "batch_size": batch_size,
+                "learning_rate": lr,
+                "use_gpu": use_gpu,
+            },
+            "final_losses": {
+                "training": train_loss,
+                "validation": val_loss,
+            },
+            "loss_evolution": {
+                "training": curves["train_loss"],
+                "validation": curves["val_loss"],
+            }
+        }
+        model.save_model(file_name, data_dict)
+
+    # Save it as best model if it is appropriate
+    with open(os.path.join(PATH_TO_WEIGHTS, "best.toml"), "r") as f:
+        best_model = toml.load(f)
+    if best_model["final_losses"]["validation"] > val_loss:
+        model.save_model(os.path.join(PATH_TO_WEIGHTS, "best.pt"), data_dict)
+
     return curves
 
 

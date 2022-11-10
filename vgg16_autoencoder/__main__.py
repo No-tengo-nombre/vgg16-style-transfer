@@ -54,6 +54,18 @@ parser.add_argument(
     default=1,
     help="Set the batch size.",
 )
+parser.add_argument(
+    "-s",
+    "--show-curves",
+    action="store_true",
+    help="Show the training curves.",
+)
+parser.add_argument(
+    "-S",
+    "--save-weights",
+    action="store_true",
+    help="Save the model's weights.",
+)
 
 args = parser.parse_args()
 setup_logger(args.quiet, args.debug, args.verbose, args.log)
@@ -103,7 +115,7 @@ if args.train:
         encoder=vgg_encoder,
         transform=transform,
         use_gpu=USE_GPU,
-        size_limit=1000,
+        size_limit=10,
     )
 
     # Loss function and model to train
@@ -126,6 +138,8 @@ if args.train:
         LEARNING_RATE,
         vgg_encoder,
         use_gpu=USE_GPU,
+        save_weights=args.save_weights,
     )
 
-    show_curves(curves)
+    if args.show_curves:
+        show_curves(curves)
