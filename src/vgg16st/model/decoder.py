@@ -66,6 +66,7 @@ class VGG16Decoder(nn.Module):
         return self.model(x)
 
     def save_model(self, path, data_dict=None):
+        LOGGER.info(f"Saving model in {path}.")
         self.eval()
         torch.save(self.state_dict(), path)
 
