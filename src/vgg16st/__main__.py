@@ -170,10 +170,19 @@ if args.train:
         if path is None:
             LOGGER.info("Setting decoder weights to the best ones.")
             path = os.path.join(PATH_TO_WEIGHTS, "best.pt")
-        vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
 
-        with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
-            start_curves = toml.load(f)["loss_evolution"]
+        try:
+            vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
+            with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
+                start_curves = toml.load(f)["loss_evolution"]
+        except FileNotFoundError as e:
+            if path == os.path.join(PATH_TO_WEIGHTS, "best.pt"):
+                LOGGER.warning("Best model was not found (maybe it was deleted?). Initializing from a scratch.")
+                vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+                start_curves = None
+            else:
+                raise e
+
     else:
         LOGGER.info("Initializing decoder from scratch.")
         vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
