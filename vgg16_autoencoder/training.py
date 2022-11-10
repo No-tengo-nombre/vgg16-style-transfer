@@ -45,7 +45,7 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
-                save_weights=True):
+                save_weights=True, start_curves=None):
     LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
@@ -63,10 +63,15 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         val_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
     )
 
-    curves = {
-        "train_loss": [],
-        "val_loss": [],
-    }
+    # If start_curves is given it should be a dictionary with keys "train_loss"
+    # and "val_loss".
+    if start_curves is None:
+        curves = {
+            "training": [],
+            "validation": [],
+        }
+    else:
+        curves = start_curves
 
     initial_time = time.perf_counter()
     n_batches = len(train_loader)
@@ -113,8 +118,8 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         val_loss = evaluate(val_loader, model, encoder, criterion, use_gpu)
 
         # Save the curves
-        curves["train_loss"].append(train_loss)
-        curves["val_loss"].append(val_loss)
+        curves["training"].append(train_loss)
+        curves["validation"].append(val_loss)
 
     model = model.cpu()
 
@@ -135,8 +140,8 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 "validation": val_loss,
             },
             "loss_evolution": {
-                "training": curves["train_loss"],
-                "validation": curves["val_loss"],
+                "training": curves["training"],
+                "validation": curves["validation"],
             }
         }
         model.save_model(file_name, data_dict)
@@ -157,8 +162,8 @@ def show_curves(curves):
 
     epochs = np.arange(len(curves["val_loss"])) + 1
 
-    ax.plot(epochs, curves["val_loss"], label="validation")
-    ax.plot(epochs, curves["train_loss"], label="training")
+    ax.plot(epochs, curves["validation"], label="validation")
+    ax.plot(epochs, curves["training"], label="training")
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")
     ax.set_title("Loss evolution during training")

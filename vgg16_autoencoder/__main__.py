@@ -2,6 +2,7 @@ import torchvision
 import torch
 import argparse
 import os
+import toml
 
 from vgg16_autoencoder.dataset import VGG16DecoderImageDataset
 from vgg16_autoencoder.model import VGG16Encoder, VGG16Decoder
@@ -137,6 +138,9 @@ if args.train:
             LOGGER.info("Setting decoder weights to the best ones.")
             path = os.path.join(PATH_TO_WEIGHTS, "best.pt")
         vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
+
+        with open(f"{''.join(path.split('.')[:-1])}.toml", "r") as f:
+            start_curves = toml.load(f)["loss_evolution"]
     else:
         LOGGER.info("Initializing decoder from scratch.")
         vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
