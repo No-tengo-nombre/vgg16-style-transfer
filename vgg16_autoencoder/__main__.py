@@ -162,6 +162,7 @@ if args.train:
     else:
         LOGGER.info("Initializing decoder from scratch.")
         vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+        start_curves = None
 
 
     # Flush the memory in cuda before running
@@ -184,6 +185,7 @@ if args.train:
         vgg_encoder,
         use_gpu=USE_GPU,
         save_weights=args.save_weights,
+        start_curves=start_curves,
     )
 
     if args.show_curves:
