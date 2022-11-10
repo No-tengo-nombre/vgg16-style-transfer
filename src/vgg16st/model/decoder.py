@@ -73,6 +73,6 @@ class VGG16Decoder(nn.Module):
         # Store the data in a TOML file contained in the same
         # directory as the weights.
         if data_dict is not None:
-            with open(f"{''.join(path.split('.')[:-1])}.toml", "w") as f:
-                LOGGER.info(f"Saving data in {''.join(path.split('.')[:-1])}.toml.")
+            with open(f"{'.'.join(path.split('.')[:-1])}.toml", "w") as f:
+                LOGGER.info(f"Saving data in {'.'.join(path.split('.')[:-1])}.toml.")
                 toml.dump(data_dict, f)

@@ -157,7 +157,7 @@ if args.train:
             path = os.path.join(PATH_TO_WEIGHTS, "best.pt")
         vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
 
-        with open(f"{''.join(path.split('.')[:-1])}.toml", "r") as f:
+        with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
             start_curves = toml.load(f)["loss_evolution"]
     else:
         LOGGER.info("Initializing decoder from scratch.")
