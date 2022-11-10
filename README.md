@@ -30,7 +30,7 @@ To use the package, you have one of two ways:
 
 1. Use the CLI provided by the package. To do this, you simply have to run
 ```
-python -m vgg16st [-T/-E] ...
+python -m vgg16autoencoder [-T/-E] ...
 ```
 with the appropiate arguments, and then the model will train (if you use `-T`) or evaluate the best model on a given image (if you use `-E`).
 
