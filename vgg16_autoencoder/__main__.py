@@ -132,7 +132,7 @@ if args.train:
         if args.debug is None:
             reduced_size = 5000
         else:
-            reduced_size = args.debug
+            reduced_size = int(args.debug)
 
         LOGGER.debug(f"Creating reduced dataset with size {reduced_size}.")
         reduced_ds = VGG16DecoderImageDataset.from_dir(
