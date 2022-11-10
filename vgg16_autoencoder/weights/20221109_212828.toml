@@ -1,0 +1,14 @@
+[parameters]
+epochs = 1
+criterion = "VGG16DecoderLossFunction"
+batch_size = 5
+learning_rate = 0.0005
+use_gpu = true
+
+[final_losses]
+training = 2997228.6875
+validation = 3328197.75
+
+[loss_evolution]
+training = [ 2997228.6875,]
+validation = [ 3328197.75,]
