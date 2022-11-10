@@ -7,6 +7,8 @@ from vgg16autoencoder.logger import LOGGER
 class VGG16Encoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
         LOGGER.info(f"Initializing encoder (depth: {depth}, use_gpu: {use_gpu}).")
+        self.depth = depth
+        self.use_gpu = use_gpu
         super().__init__()
         all_layers = (
             models
