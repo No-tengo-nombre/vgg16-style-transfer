@@ -47,14 +47,21 @@ class VGG16Decoder(nn.Module):
             all_layers = all_layers.to("cuda")
 
         # Hardcoded indices for each depth
+        # indices = {
+        #     1: 1,
+        #     2: 8,
+        #     3: 15,
+        #     4: 20,
+        #     5: 25,
+        # }
         indices = {
-            1: 1,
-            2: 8,
-            3: 15,
-            4: 20,
-            5: 25,
+            1: 22,
+            2: 17,
+            3: 10,
+            4: 3,
+            5: 0,
         }
-        self.model = all_layers[:indices[depth] + 1]
+        self.model = all_layers[indices[depth]:]
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
