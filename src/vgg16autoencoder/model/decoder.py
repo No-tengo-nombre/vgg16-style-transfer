@@ -47,20 +47,6 @@ class VGG16Decoder(nn.Module):
             all_layers = all_layers.to("cuda")
 
         # Hardcoded indices for each depth
-        # indices = {
-        #     1: 1,
-        #     2: 8,
-        #     3: 15,
-        #     4: 20,
-        #     5: 25,
-        # }
-        # indices = {
-        #     1: 22,
-        #     2: 17,
-        #     3: 10,
-        #     4: 3,
-        #     5: 0,
-        # }
         indices = {
             1: 21,
             2: 16,
@@ -69,6 +55,7 @@ class VGG16Decoder(nn.Module):
             5: 0,
         }
         self.model = all_layers[indices[depth]:]
+        LOGGER.info(f"Decoder layers\n{self.model}.")
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):

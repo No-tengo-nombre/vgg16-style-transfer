@@ -28,6 +28,7 @@ class VGG16Encoder(nn.Module):
             5: 26,
         }
         self.model = all_layers[:indices[depth] + 1]
+        LOGGER.info(f"Encoder layers\n{self.model}.")
 
     def forward(self, x):
         return self.model(x)
