@@ -4,12 +4,12 @@ import argparse
 import os
 import toml
 
-from vgg16_autoencoder.dataset import VGG16DecoderImageDataset
-from vgg16_autoencoder.model import VGG16Encoder, VGG16Decoder
-from vgg16_autoencoder.loss import VGG16DecoderLossFunction
-from vgg16_autoencoder.training import train_model, show_curves
-from vgg16_autoencoder.logger import LOGGER, setup_logger
-from vgg16_autoencoder import PATH_TO_WEIGHTS
+from vgg16st.dataset import VGG16DecoderImageDataset
+from vgg16st.model import VGG16Encoder, VGG16Decoder
+from vgg16st.loss import VGG16DecoderLossFunction
+from vgg16st.training import train_model, show_curves
+from vgg16st.logger import LOGGER, setup_logger
+from vgg16st import PATH_TO_WEIGHTS
 
 
 desc_str = """VGG16 training and evaluation code."""

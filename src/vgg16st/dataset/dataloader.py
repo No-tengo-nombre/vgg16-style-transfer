@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from vgg16_autoencoder.logger import LOGGER
+from vgg16st.logger import LOGGER
 
 
 class VGG16DecoderImageDataloader:
