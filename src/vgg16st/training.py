@@ -73,7 +73,6 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
     else:
         curves = start_curves
 
-    initial_time = time.perf_counter()
     n_batches = len(train_loader)
 
     # Initialize the values to display them
@@ -92,16 +91,16 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         # Train the model
         model.train()
         progress_bar = tqdm(
-            enumerate(train_loader),
+            train_loader,
             total=n_batches,
             desc=f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:.2f}, validation loss = {val_loss:.2f})",
         )
-        for i, (x_batch, y_batch) in progress_bar:
+        for x_batch, y_batch in progress_bar:
             if use_gpu:
                 x_batch = x_batch.cuda()
                 y_batch = y_batch.cuda()
 
-            y_predicted, loss = train_step(
+            _, loss = train_step(
                 x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder,
             )
             cumulative_train_loss += loss.item()
