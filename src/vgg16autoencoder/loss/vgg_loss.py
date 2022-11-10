@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import matplotlib.pyplot as plt
 
-from vgg16st.logger import LOGGER
+from vgg16autoencoder.logger import LOGGER
 
 
 class VGG16DecoderLossFunction(nn.Module):

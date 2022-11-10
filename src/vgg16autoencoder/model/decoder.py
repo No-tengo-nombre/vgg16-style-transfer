@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import toml
 
-from vgg16st.logger import LOGGER
+from vgg16autoencoder.logger import LOGGER
 
 
 class VGG16Decoder(nn.Module):

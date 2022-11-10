@@ -22,7 +22,7 @@ python -m pip install .
 
 **IMPORTANT**: At the time of writing this, I have not added a requirements file, so you have to manually install the dependencies (mainly PyTorch).
 
-This will install the `vgg16st` package, which contains the model code and the functions to train, as well as the pretrained weights for the model.
+This will install the `vgg16autoencoder` package, which contains the model code and the functions to train, as well as the pretrained weights for the model.
 
 
 ## Use instructions
