@@ -30,7 +30,8 @@ parser.add_argument(
 parser.add_argument(
     "-d",
     "--debug",
-    action="store_true",
+    action="store",
+    default=False,
     help="Run in debug mode.",
 )
 parser.add_argument(
@@ -58,6 +59,12 @@ parser.add_argument(
     help="Set the batch size.",
 )
 parser.add_argument(
+    "-e",
+    "--epochs",
+    action="store",
+    help="Set the number of epochs.",
+)
+parser.add_argument(
     "-s",
     "--show-curves",
     action="store_true",
@@ -83,10 +90,10 @@ setup_logger(args.quiet, args.debug, args.verbose, args.log)
 
 
 if args.train:
-    LOGGER.info(f"Running in training mode with batch size {int(args.batch_size)}.")
+    LOGGER.info(f"Running in training mode with {int(args.epochs)} epochs and  batch size {int(args.batch_size)}.")
     LEARNING_RATE = 5e-4
     BATCH_SIZE = int(args.batch_size)
-    EPOCHS = 1
+    EPOCHS = int(args.epochs)
     USE_GPU = True
     NORM_MEAN = (0.485, 0.456, 0.406)
     NORM_STD = (0.229, 0.224, 0.225)
@@ -119,14 +126,25 @@ if args.train:
         transform=transform,
         use_gpu=USE_GPU,
     )
-    LOGGER.debug("Creating reduced dataset.")
-    reduced_ds = VGG16DecoderImageDataset.from_dir(
-        "data/test2017",
-        encoder=vgg_encoder,
-        transform=transform,
-        use_gpu=USE_GPU,
-        size_limit=10,
-    )
+
+    if args.debug or args.debug is None:
+        DEBUG = True
+        if args.debug is None:
+            reduced_size = 5000
+        else:
+            reduced_size = args.debug
+
+        LOGGER.debug(f"Creating reduced dataset with size {reduced_size}.")
+        reduced_ds = VGG16DecoderImageDataset.from_dir(
+            "data/test2017",
+            encoder=vgg_encoder,
+            transform=transform,
+            use_gpu=USE_GPU,
+            size_limit=reduced_size,
+        )
+    else:
+        DEBUG = False
+
 
     # Loss function and model to train
     criterion = VGG16DecoderLossFunction(1, use_gpu=USE_GPU)
@@ -149,7 +167,10 @@ if args.train:
     # Flush the memory in cuda before running
     torch.cuda.empty_cache()
 
-    _, _, train_ds, val_ds = reduced_ds.split(0.7)
+    if DEBUG:
+        _, _, train_ds, val_ds = reduced_ds.split(0.7)
+    else:
+        _, _, train_ds, val_ds = transformed_ds.split(0.7)
 
     # Run the training
     curves = train_model(
