@@ -94,7 +94,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         progress_bar = tqdm(
             enumerate(train_loader),
             total=n_batches,
-            desc=f"EPOCH {epoch + 1}/{epochs} | Training the decoder (train loss = {train_loss}, validation loss = {val_loss})",
+            desc=f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:.2f}, validation loss = {val_loss:2f})",
         )
         for i, (x_batch, y_batch) in progress_bar:
             if use_gpu:
@@ -108,7 +108,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
             train_loss_count += 1
 
             train_loss = cumulative_train_loss / train_loss_count
-            progress_bar.desc = f"EPOCH {epoch + 1}/{epochs} | Training the decoder (train loss = {train_loss}, validation loss = {val_loss})"
+            progress_bar.desc = f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:.2f}, validation loss = {val_loss:2f})"
 
         train_loss = cumulative_train_loss / train_loss_count
 
