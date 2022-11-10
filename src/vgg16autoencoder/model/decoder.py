@@ -54,11 +54,18 @@ class VGG16Decoder(nn.Module):
         #     4: 20,
         #     5: 25,
         # }
+        # indices = {
+        #     1: 22,
+        #     2: 17,
+        #     3: 10,
+        #     4: 3,
+        #     5: 0,
+        # }
         indices = {
-            1: 22,
-            2: 17,
-            3: 10,
-            4: 3,
+            1: 21,
+            2: 16,
+            3: 9,
+            4: 2,
             5: 0,
         }
         self.model = all_layers[indices[depth]:]
