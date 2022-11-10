@@ -62,7 +62,6 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
     val_loader = VGG16DecoderImageDataloader(
         val_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
     )
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     curves = {
         "train_loss": [],
@@ -78,6 +77,9 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
 
     LOGGER.info("Starting training.")
     for epoch in range(epochs):
+        # Initialize the optimizer per epoch
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+
         # Metrics
         cumulative_train_loss = 0
         train_loss_count = 0
