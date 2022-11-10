@@ -7,7 +7,7 @@ from vgg16autoencoder.logger import LOGGER
 
 class VGG16Decoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
-        LOGGER.info("Initializing decoder.")
+        LOGGER.info(f"Initializing decoder (depth: {depth}, use_gpu: {use_gpu}).")
         super().__init__()
         self.depth = depth
         self.use_gpu = use_gpu
