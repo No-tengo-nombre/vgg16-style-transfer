@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import time
 import torch
 from tqdm import tqdm
 import numpy as np
