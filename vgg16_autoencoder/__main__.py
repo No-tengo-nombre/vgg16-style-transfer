@@ -1,12 +1,14 @@
 import torchvision
 import torch
 import argparse
+import os
 
 from vgg16_autoencoder.dataset import VGG16DecoderImageDataset
 from vgg16_autoencoder.model import VGG16Encoder, VGG16Decoder
 from vgg16_autoencoder.loss import VGG16DecoderLossFunction
 from vgg16_autoencoder.training import train_model, show_curves
 from vgg16_autoencoder.logger import LOGGER, setup_logger
+from vgg16_autoencoder import PATH_TO_WEIGHTS
 
 
 desc_str = """VGG16 training and evaluation code."""
@@ -66,6 +68,14 @@ parser.add_argument(
     action="store_true",
     help="Save the model's weights.",
 )
+parser.add_argument(
+    "-w",
+    "--from-weights",
+    action="store",
+    nargs="?",
+    default=False,
+    help="Load the model from weights.",
+)
 
 args = parser.parse_args()
 setup_logger(args.quiet, args.debug, args.verbose, args.log)
@@ -94,7 +104,6 @@ if args.train:
 
     LOGGER.info("Creating datasets.")
     LOGGER.debug("Creating untransformed dataset.")
-    LOGGER.debug("Creating untransformed dataset.")
     # Create the datasets
     untransformed_ds = VGG16DecoderImageDataset.from_dir(
         "data/test2017",
@@ -120,7 +129,18 @@ if args.train:
 
     # Loss function and model to train
     criterion = VGG16DecoderLossFunction(1, use_gpu=USE_GPU)
-    vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+
+    if args.from_weights or args.from_weights is None:
+        LOGGER.info("Initializing decoder from weights.")
+        path = args.from_weights
+        if path is None:
+            LOGGER.info("Setting decoder weights to the best ones.")
+            path = os.path.join(PATH_TO_WEIGHTS, "best.pt")
+        vgg_decoder = VGG16Decoder.from_state_dict(path=path, use_gpu=USE_GPU)
+    else:
+        LOGGER.info("Initializing decoder from scratch.")
+        vgg_decoder = VGG16Decoder(use_gpu=USE_GPU)
+
 
     # Flush the memory in cuda before running
     torch.cuda.empty_cache()

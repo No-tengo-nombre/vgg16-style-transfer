@@ -9,9 +9,7 @@ import toml
 
 from .dataset import VGG16DecoderImageDataloader
 from vgg16_autoencoder.logger import LOGGER
-
-
-PATH_TO_WEIGHTS = os.path.join("vgg16_autoencoder", "weights")
+from vgg16_autoencoder import PATH_TO_WEIGHTS
 
 
 def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
