@@ -62,6 +62,7 @@ parser.add_argument(
     "-e",
     "--epochs",
     action="store",
+    default=1,
     help="Set the number of epochs.",
 )
 parser.add_argument(
@@ -83,6 +84,20 @@ parser.add_argument(
     nargs="?",
     default=False,
     help="Load the model from weights.",
+)
+parser.add_argument(
+    "-t",
+    "--train-split",
+    action="store",
+    type=float,
+    default=0.7,
+    help="Set the training split.",
+)
+parser.add_argument(
+    "-N",
+    "--never-save",
+    action="store_true",
+    help="Never save the model.",
 )
 
 args = parser.parse_args()
@@ -169,9 +184,9 @@ if args.train:
     torch.cuda.empty_cache()
 
     if DEBUG:
-        _, _, train_ds, val_ds = reduced_ds.split(0.7)
+        _, _, train_ds, val_ds = reduced_ds.split(args.train_split)
     else:
-        _, _, train_ds, val_ds = transformed_ds.split(0.7)
+        _, _, train_ds, val_ds = transformed_ds.split(args.train_split)
 
     # Run the training
     curves = train_model(
@@ -186,6 +201,7 @@ if args.train:
         use_gpu=USE_GPU,
         save_weights=args.save_weights,
         start_curves=start_curves,
+        never_save=args.never_save,
     )
 
     if args.show_curves:

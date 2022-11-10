@@ -45,7 +45,7 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
-                save_weights=True, start_curves=None):
+                save_weights=True, start_curves=None, never_save=False):
     LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
@@ -122,34 +122,35 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         curves["validation"].append(val_loss)
 
         # Save the model
-        data_dict = {
-            "parameters": {
-                "current_epoch": epoch + 1,
-                "epochs": epochs,
-                "criterion": criterion.__class__.__name__,
-                "batch_size": batch_size,
-                "learning_rate": lr,
-                "use_gpu": use_gpu,
-            },
-            "final_losses": {
-                "training": train_loss,
-                "validation": val_loss,
-            },
-            "loss_evolution": {
-                "training": curves["training"],
-                "validation": curves["validation"],
+        if not never_save:
+            data_dict = {
+                "parameters": {
+                    "current_epoch": epoch + 1,
+                    "epochs": epochs,
+                    "criterion": criterion.__class__.__name__,
+                    "batch_size": batch_size,
+                    "learning_rate": lr,
+                    "use_gpu": use_gpu,
+                },
+                "final_losses": {
+                    "training": train_loss,
+                    "validation": val_loss,
+                },
+                "loss_evolution": {
+                    "training": curves["training"],
+                    "validation": curves["validation"],
+                }
             }
-        }
-        if save_weights:
-            now = datetime.now()
-            file_name = os.path.join(PATH_TO_WEIGHTS, f"{now.year}{now.month:02}{now.day:02}_{now.hour:02}{now.minute:02}{now.second:02}.pt")
-            model.save_model(file_name, data_dict)
+            if save_weights:
+                now = datetime.now()
+                file_name = os.path.join(PATH_TO_WEIGHTS, f"{now.year}{now.month:02}{now.day:02}_{now.hour:02}{now.minute:02}{now.second:02}.pt")
+                model.save_model(file_name, data_dict)
 
-        # Save it as best model if it is appropriate
-        with open(os.path.join(PATH_TO_WEIGHTS, "best.toml"), "r") as f:
-            best_model = toml.load(f)
-        if best_model["final_losses"]["validation"] > val_loss:
-            model.save_model(os.path.join(PATH_TO_WEIGHTS, "best.pt"), data_dict)
+            # Save it as best model if it is appropriate
+            with open(os.path.join(PATH_TO_WEIGHTS, "best.toml"), "r") as f:
+                best_model = toml.load(f)
+            if best_model["final_losses"]["validation"] > val_loss:
+                model.save_model(os.path.join(PATH_TO_WEIGHTS, "best.pt"), data_dict)
 
     model = model.cpu()
 
