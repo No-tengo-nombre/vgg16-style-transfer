@@ -6,8 +6,8 @@ learning_rate = 0.0005
 use_gpu = true
 
 [final_losses]
-training = 3059883.5
-validation = 3202505.0
+training = 300059883.5
+validation = 320002505.0
 
 [loss_evolution]
 training = [ 3059883.5,]
