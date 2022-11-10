@@ -69,14 +69,16 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
             "training": [],
             "validation": [],
         }
+        train_loss = np.inf
+        val_loss = np.inf
     else:
         curves = start_curves
+        train_loss = start_curves["training"][-1]
+        val_loss = start_curves["validation"][-1]
 
     n_batches = len(train_loader)
 
     # Initialize the values to display them
-    train_loss = np.inf
-    val_loss = np.inf
 
     LOGGER.info("Starting training.")
     for epoch in range(epochs):
