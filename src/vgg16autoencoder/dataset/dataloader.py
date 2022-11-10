@@ -11,6 +11,10 @@ class VGG16DecoderImageDataloader:
         self.batch_size = batch_size
         self.use_gpu = use_gpu
 
+        feats, img = self.dataset[0]
+        self.feat_shape = feats.shape
+        self.img_shape = img.shape
+
     def __len__(self):
         return int(np.ceil(len(self.dataset) / self.batch_size))
 
@@ -24,8 +28,8 @@ class VGG16DecoderImageDataloader:
             raise StopIteration
         indices = self.indices[:self.batch_size]
         self.indices = self.indices[self.batch_size:]
-        result_feats = torch.zeros((self.batch_size, 512, 14, 14))
-        result_image = torch.zeros((self.batch_size, 3, 224, 224))
+        result_feats = torch.zeros((self.batch_size, *self.feat_shape))
+        result_image = torch.zeros((self.batch_size, *self.img_shape))
         for i, idx in enumerate(indices):
             features, image = self.dataset[idx]
             result_feats[i] = features
