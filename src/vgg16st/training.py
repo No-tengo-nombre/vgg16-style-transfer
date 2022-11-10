@@ -147,10 +147,15 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 model.save_model(file_name, data_dict)
 
             # Save it as best model if it is appropriate
-            with open(os.path.join(PATH_TO_WEIGHTS, "best.toml"), "r") as f:
-                best_model = toml.load(f)
-            if best_model["final_losses"]["validation"] > val_loss:
+            try:
+                with open(os.path.join(PATH_TO_WEIGHTS, "best.toml"), "r") as f:
+                    best_model = toml.load(f)
+                if best_model["final_losses"]["validation"] > val_loss:
+                    model.save_model(os.path.join(PATH_TO_WEIGHTS, "best.pt"), data_dict)
+            except FileNotFoundError:
+                LOGGER.warning("Best model not found (maybe it was deleted?). Saving it anyways.")
                 model.save_model(os.path.join(PATH_TO_WEIGHTS, "best.pt"), data_dict)
+
 
     model = model.cpu()
 
