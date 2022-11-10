@@ -1,4 +1,4 @@
 import os
 
 
-PATH_TO_WEIGHTS = os.path.join(os.path.dirname(), "weights")
+PATH_TO_WEIGHTS = os.path.join(os.getcwd(), "weights")
