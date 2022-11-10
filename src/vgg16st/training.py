@@ -44,7 +44,7 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
-                batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
+                batch_size, validation_batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
                 save_weights=True, start_curves=None, never_save=False):
     LOGGER.info("Training model.")
     if use_gpu:
@@ -60,7 +60,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         train_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
     )
     val_loader = VGG16DecoderImageDataloader(
-        val_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
+        val_dataset, batch_size=validation_batch_size, use_gpu=use_gpu, **loader_kwargs,
     )
 
     # If start_curves is given it should be a dictionary with keys "train_loss"

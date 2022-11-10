@@ -55,8 +55,9 @@ parser.add_argument(
     "-b",
     "--batch-size",
     action="store",
-    default=1,
-    help="Set the batch size.",
+    nargs=2,
+    default=(1, 1),
+    help="Set the training and validation batch size.",
 )
 parser.add_argument(
     "-e",
@@ -105,9 +106,11 @@ setup_logger(args.quiet, args.debug, args.verbose, args.log)
 
 
 if args.train:
-    LOGGER.info(f"Running in training mode with {int(args.epochs)} epochs and  batch size {int(args.batch_size)}.")
+    LOGGER.info(f"Running in training mode with {int(args.epochs)} epochs and batch sizes {int(args.batch_size[0])}\
+        for training and {int(args.batch_size[1])} for validation.")
     LEARNING_RATE = 5e-4
-    BATCH_SIZE = int(args.batch_size)
+    BATCH_SIZE = int(args.batch_size[0])
+    VALIDATION_BATCH_SIZE = int(args.batch_size[1])
     EPOCHS = int(args.epochs)
     USE_GPU = True
     NORM_MEAN = (0.485, 0.456, 0.406)
@@ -205,6 +208,7 @@ if args.train:
         EPOCHS,
         criterion,
         BATCH_SIZE,
+        VALIDATION_BATCH_SIZE,
         LEARNING_RATE,
         vgg_encoder,
         use_gpu=USE_GPU,
