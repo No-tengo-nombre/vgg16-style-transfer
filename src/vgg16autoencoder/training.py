@@ -92,7 +92,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         progress_bar = tqdm(
             train_loader,
             total=n_batches,
-            desc=f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:e}, validation loss = {val_loss:e})",
+            desc=f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:.4e}, validation loss = {val_loss:.4e})",
         )
         for x_batch, y_batch in progress_bar:
             if use_gpu:
@@ -106,7 +106,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
             train_loss_count += 1
 
             train_loss = cumulative_train_loss / train_loss_count
-            progress_bar.desc = f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:e}, validation loss = {val_loss:e})"
+            progress_bar.desc = f"({epoch + 1}/{epochs}) Training | train loss = {train_loss:.4e}, validation loss = {val_loss:.4e})"
 
         train_loss = cumulative_train_loss / train_loss_count
 
