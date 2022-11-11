@@ -168,7 +168,7 @@ def show_curves(curves):
     fig, ax = plt.subplots(1, 1, figsize=(13, 5))
     fig.set_facecolor("white")
 
-    epochs = np.arange(len(curves["val_loss"])) + 1
+    epochs = np.arange(len(curves["validation"])) + 1
 
     ax.plot(epochs, curves["validation"], label="validation")
     ax.plot(epochs, curves["training"], label="training")
