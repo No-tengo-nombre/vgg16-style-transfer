@@ -1,5 +1,5 @@
 [parameters]
-current_epoch = 3
+current_epoch = 13
 epochs = 5
 criterion = "VGG16DecoderLossFunction"
 batch_size = 100
