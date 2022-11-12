@@ -1,0 +1,2 @@
+class Coloring:
+    pass
