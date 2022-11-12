@@ -86,7 +86,7 @@ def train_main(args):
             with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
                 file = toml.load(f)
                 start_curves = file["loss_evolution"]
-                start_epoch = file["current_epoch"]
+                start_epoch = file["parameters"]["current_epoch"]
         except FileNotFoundError as e:
             if path == os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt"):
                 LOGGER.warning("Best model was not found (maybe it was deleted?). Initializing from a scratch.")
