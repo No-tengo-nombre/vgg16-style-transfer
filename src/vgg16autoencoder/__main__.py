@@ -1,116 +1,18 @@
 import torchvision
 import torch
-import argparse
 import os
 import toml
 
-from .dataset import VGG16DecoderImageDataset
-from .model import VGG16Encoder, VGG16Decoder
-from .loss import VGG16DecoderLossFunction
-from .training import train_model, show_curves
-from .logger import LOGGER, setup_logger
-from . import PATH_TO_WEIGHTS
+from vgg16autoencoder.dataset import VGG16DecoderImageDataset
+from vgg16autoencoder.model import VGG16Encoder, VGG16Decoder
+from vgg16autoencoder.loss import VGG16DecoderLossFunction
+from vgg16autoencoder.training import train_model, show_curves
+from vgg16autoencoder.logger import LOGGER, setup_logger
+from vgg16autoencoder.arg_parser import PARSER
+from vgg16autoencoder import PATH_TO_WEIGHTS
 
 
-desc_str = """VGG16 training and evaluation code."""
-
-parser = argparse.ArgumentParser(description=desc_str)
-parser.add_argument(
-    "-T",
-    "--train",
-    action="store_true",
-    help="Train the model.",
-)
-parser.add_argument(
-    "-E",
-    "--evaluate",
-    action="store",
-    help="Evaluate the model.",
-)
-parser.add_argument(
-    "-d",
-    "--debug",
-    action="store",
-    default=False,
-    help="Run in debug mode.",
-)
-parser.add_argument(
-    "--log",
-    action="store",
-    help="Generate log files for the current run in the given directory.",
-)
-parser.add_argument(
-    "-q",
-    "--quiet",
-    action="store_true",
-    help="Disable logging.",
-)
-parser.add_argument(
-    "-v",
-    "--verbose",
-    action="store_true",
-    help="Run in verbose mode.",
-)
-parser.add_argument(
-    "-b",
-    "--batch-size",
-    action="store",
-    nargs=2,
-    default=(1, 1),
-    help="Set the training and validation batch size.",
-)
-parser.add_argument(
-    "-e",
-    "--epochs",
-    action="store",
-    default=1,
-    help="Set the number of epochs.",
-)
-parser.add_argument(
-    "-s",
-    "--show-curves",
-    action="store_true",
-    help="Show the training curves.",
-)
-parser.add_argument(
-    "-S",
-    "--save-weights",
-    action="store",
-    default="",
-    help="Save the model's weights.",
-)
-parser.add_argument(
-    "-w",
-    "--from-weights",
-    action="store",
-    nargs="?",
-    default=False,
-    help="Load the model from weights.",
-)
-parser.add_argument(
-    "-t",
-    "--train-split",
-    action="store",
-    type=float,
-    default=0.7,
-    help="Set the training split.",
-)
-parser.add_argument(
-    "-N",
-    "--never-save",
-    action="store_true",
-    help="Never save the model.",
-)
-parser.add_argument(
-    "-D",
-    "--depth",
-    action="store",
-    type=int,
-    default=5,
-    help="Set the depth of the encoder and decoder.",
-)
-
-args = parser.parse_args()
+args = PARSER.parse_args()
 setup_logger(args.quiet, args.debug, args.verbose, args.log)
 
 
