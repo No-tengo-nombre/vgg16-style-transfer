@@ -22,19 +22,19 @@ python -m pip install .
 
 **IMPORTANT**: At the time of writing this, I have not added a requirements file, so you have to manually install the dependencies (mainly PyTorch).
 
-This will install the `vgg16autoencoder` package, which contains the model code and the functions to train, as well as the pretrained weights for the model.
+This will install two packages: the `vgg16autoencoder` package, which contains the model code and the functions to train, as well as the pretrained weights for the model; and the `vgg16st` package, which depends on the other one and contains the code to allow for the transfering of styles between images.
 
 
 ## Use instructions
-To use the package, you have one of two ways:
+To use each package, you have one of two ways:
 
 1. Use the CLI provided by the package. To do this, you simply have to run
 ```
-python -m vgg16autoencoder [-T/-E] ...
+python -m {vgg16autoencoder, vgg16st} ...
 ```
-with the appropiate arguments, and then the model will train (if you use `-T`) or evaluate the best model on a given image (if you use `-E`).
+with the appropiate arguments, and then the model will train, evaluate or apply the style transfering.
 
-2. Create a script that imports the desired functionality and does whatever you need it to do :)
+2. Create a script that imports the desired functionality and does whatever you need it to do :) this is the best way if you need to do something very specific, for which I have not accounted in the CLI.
 
 
 ## References
