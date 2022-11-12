@@ -84,12 +84,15 @@ def train_main(args):
         try:
             vgg_decoder = VGG16Decoder.from_state_dict(depth=args.depth, path=path, use_gpu=USE_GPU)
             with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
-                start_curves = toml.load(f)["loss_evolution"]
+                file = toml.load(f)
+                start_curves = file["loss_evolution"]
+                start_epoch = file["current_epoch"]
         except FileNotFoundError as e:
             if path == os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt"):
                 LOGGER.warning("Best model was not found (maybe it was deleted?). Initializing from a scratch.")
                 vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
                 start_curves = None
+                start_epoch = 0
             else:
                 raise e
 
@@ -122,6 +125,7 @@ def train_main(args):
         save_weights=args.save_weights,
         start_curves=start_curves,
         never_save=args.never_save,
+        start_epoch=start_epoch,
     )
 
     if args.show_curves:

@@ -44,7 +44,7 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
 def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 batch_size, validation_batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
-                save_weights=True, start_curves=None, never_save=False):
+                save_weights=True, start_curves=None, never_save=False, start_epoch=0):
     LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
@@ -94,7 +94,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         progress_bar = tqdm(
             train_loader,
             total=n_batches,
-            desc=f"({epoch + 1}/{epochs}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}",
+            desc=f"({epoch + 1 + start_epoch}/{epochs + start_epoch}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}",
         )
         for x_batch, y_batch in progress_bar:
             if use_gpu:
@@ -108,7 +108,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
             train_loss_count += 1
 
             train_loss = cumulative_train_loss / train_loss_count
-            progress_bar.desc = f"({epoch + 1}/{epochs}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}"
+            progress_bar.desc = f"({epoch + 1 + start_epoch}/{epochs + start_epoch}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}"
 
         train_loss = cumulative_train_loss / train_loss_count
 
