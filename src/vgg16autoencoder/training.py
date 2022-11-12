@@ -125,7 +125,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
         if not never_save:
             data_dict = {
                 "parameters": {
-                    "current_epoch": epoch + 1,
+                    "current_epoch": epoch + 1 + start_epoch,
                     "epochs": epochs,
                     "criterion": criterion.__class__.__name__,
                     "batch_size": batch_size,
