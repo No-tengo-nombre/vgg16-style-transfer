@@ -31,7 +31,7 @@ PARSER.add_argument(
     help="Run in verbose mode.",
 )
 
-subparser = PARSER.add_subparsers()
+subparser = PARSER.add_subparsers(dest="subparser_name")
 
 
 ### Training parser ###
