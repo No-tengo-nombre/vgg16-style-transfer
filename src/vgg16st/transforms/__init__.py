@@ -1,3 +1,2 @@
-from vgg16st.transforms.transform import Transform
-from vgg16st.transforms.whitening import Whitening
-from vgg16st.transforms.coloring import Coloring
+from vgg16st.transforms.whitening import whitening
+from vgg16st.transforms.coloring import coloring

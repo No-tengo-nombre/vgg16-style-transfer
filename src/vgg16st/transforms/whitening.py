@@ -1,2 +1,2 @@
-class Whitening:
+def whitening():
     pass
