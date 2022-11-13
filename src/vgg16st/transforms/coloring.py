@@ -1,2 +1,2 @@
-def coloring():
+class Coloring:
     pass
