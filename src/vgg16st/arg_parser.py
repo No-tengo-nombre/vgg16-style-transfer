@@ -98,3 +98,10 @@ st_parser.add_argument(
     action="store_true",
     help="use the gpu for the style transfer",
 )
+st_parser.add_argument(
+    "--method",
+    action="store",
+    type=str,
+    default="paper",
+    help="method to use for the WCT",
+)
