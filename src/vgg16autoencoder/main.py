@@ -9,6 +9,7 @@ def train_main(args):
     from vgg16autoencoder.loss import VGG16DecoderLossFunction
     from vgg16autoencoder.training import train_model, show_curves
     from vgg16autoencoder.logger import LOGGER
+    from vgg16autoencoder.constants import NORM_MEAN, NORM_STD
     from vgg16autoencoder import PATH_TO_WEIGHTS
 
 
@@ -19,8 +20,6 @@ def train_main(args):
     VALIDATION_BATCH_SIZE = int(args.batch_size[1])
     EPOCHS = int(args.epochs)
     USE_GPU = True
-    NORM_MEAN = (0.485, 0.456, 0.406)
-    NORM_STD = (0.229, 0.224, 0.225)
 
     # Define the transform for the data
     LOGGER.info("Setting up transforms for dataset.")
