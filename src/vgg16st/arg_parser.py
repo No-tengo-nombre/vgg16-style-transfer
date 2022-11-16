@@ -85,3 +85,10 @@ st_parser.add_argument(
     type=str,
     help="save the images to the target directory",
 )
+st_parser.add_argument(
+    "-a",
+    "--alpha",
+    action="store",
+    type=int,
+    help="determine the alpha for blending",
+)
