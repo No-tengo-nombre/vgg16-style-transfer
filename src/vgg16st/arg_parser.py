@@ -89,6 +89,12 @@ st_parser.add_argument(
     "-a",
     "--alpha",
     action="store",
-    type=int,
+    type=float,
+    default=1.0,
     help="determine the alpha for blending",
+)
+st_parser.add_argument(
+    "--gpu",
+    action="store_true",
+    help="use the gpu for the style transfer",
 )
