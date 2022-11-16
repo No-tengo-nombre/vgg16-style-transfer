@@ -1,9 +1,7 @@
 import torch
 
 from vgg16st.exceptions import MethodException
-
-
-EPSILON = 1e-30
+from vgg16autoencoder import EPSILON
 
 
 class Whitening:
@@ -22,7 +20,8 @@ def __whitening_paper(content):
     # Center the image
     channels, height, width = content.shape
     content_clone = content.clone()
-    c = content_clone - torch.mean(content_clone, (1, 2)).reshape(1, 1, -1).T
+    mean_val = torch.mean(content_clone, (1, 2))
+    c = content_clone - mean_val.reshape(1, 1, -1).T
 
     # Calculate eigenvalues and eigenvectors of covariance matrix
     cov_mat = (c.reshape(channels, -1) @ c.reshape(channels, -1).T) / (height * width - 1)
@@ -37,4 +36,4 @@ def __whitening_paper(content):
 
     # Apply the whitening transformation
     whitened = vecs @ torch.diag(vals).pow(-0.5) @ vecs.T @ c
-    return whitened
+    return whitened, mean_val
