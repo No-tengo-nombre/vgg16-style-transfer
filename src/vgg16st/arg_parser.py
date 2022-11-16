@@ -84,6 +84,7 @@ st_parser.add_argument(
     "--save",
     action="store",
     type=str,
+    default="",
     help="save the images to the target directory",
 )
 st_parser.add_argument(
