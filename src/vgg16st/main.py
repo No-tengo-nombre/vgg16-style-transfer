@@ -18,10 +18,10 @@ DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
 def st_main(args):
     # Set up the transforms
     LOGGER.info("Setting up transforms.")
-    img_transform = torchvision.transforms.Compose(
+    img_transform = torchvision.transforms.Compose((
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
-    )
+    ))
     inverse_normalization = torchvision.transforms.Normalize(
         -NORM_MEAN / NORM_STD,
         1 / NORM_STD
