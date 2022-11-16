@@ -17,8 +17,11 @@ class Whitening:
         return self.__function(*args, **kwargs)
 
 
-def __whitening_paper(content):
-    c, _, vals, vecs = parameters_from_image(content)
+def __whitening_paper(content, parameter_content=None):
+    if parameter_content is None:
+        c, _, vals, vecs = parameters_from_image(content)
+    else:
+        c, _, vals, vecs = parameters_from_image(parameter_content)
 
     # We remove negative values and zeros
     reduced_dimension = (vals > EPSILON).sum()
