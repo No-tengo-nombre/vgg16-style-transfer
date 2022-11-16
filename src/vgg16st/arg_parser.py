@@ -50,7 +50,7 @@ The way the program interprets the depths is the following:
     - `vgg16st st ... -D -3` means use depths 1, 2 and 3.
     - `vgg16st st ... -D +3` means use depths 3, 4 and 5.
 """
-st_parser = subparser.add_parser("style_transfer", help="perform a style transfer", aliases=("st"))
+st_parser = subparser.add_parser("style_transfer", help="perform a style transfer", aliases=("s"))
 st_parser.set_defaults(main_func=st_main)
 st_parser.add_argument(
     "content",

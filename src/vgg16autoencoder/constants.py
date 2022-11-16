@@ -1,2 +1,5 @@
-NORM_MEAN = (0.485, 0.456, 0.406)
-NORM_STD = (0.229, 0.224, 0.225)
+import numpy as np
+
+
+NORM_MEAN = np.array([0.485, 0.456, 0.406])
+NORM_STD = np.array([0.229, 0.224, 0.225])
