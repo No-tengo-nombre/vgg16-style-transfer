@@ -1,16 +1,3 @@
-# import os
-# import toml
-# import torch
-# import torchvision
-
-# from vgg16autoencoder.dataset import VGG16DecoderImageDataset
-# from vgg16autoencoder.model import VGG16Encoder, VGG16Decoder
-# from vgg16autoencoder.loss import VGG16DecoderLossFunction
-# from vgg16autoencoder.training import train_model, show_curves
-# from vgg16autoencoder.logger import LOGGER
-# from vgg16autoencoder import PATH_TO_WEIGHTS
-
-
 def train_main(args):
     import os
     import toml
