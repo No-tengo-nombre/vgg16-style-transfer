@@ -36,5 +36,5 @@ def __whitening_paper(content):
     vecs = vecs[:, :reduced_dimension]
 
     # Apply the whitening transformation
-    whitened = vecs @ torch.diag(vals) @ vecs.T @ c
+    whitened = vecs @ torch.diag(vals).pow(-0.5) @ vecs.T @ c
     return whitened
