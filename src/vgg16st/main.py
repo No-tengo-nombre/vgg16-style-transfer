@@ -36,11 +36,11 @@ def st_main(args):
     for d in depths:
         match DEPTH_PATTERN.search(d).groups():
             case ("-", num):
-                model_depths.extend(range(1, num + 1))
+                model_depths.extend(range(1, int(num) + 1))
             case ("+", num):
-                model_depths.extend(range(num, 6))
+                model_depths.extend(range(int(num), 6))
             case ("", num):
-                model_depths.append(num)
+                model_depths.append(int(num))
 
     # Create the encoders and decoders
     LOGGER.info("Creating encoders and decoders")
