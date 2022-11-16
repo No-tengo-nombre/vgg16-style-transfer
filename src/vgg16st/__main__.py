@@ -1,4 +1,5 @@
-from vgg16autoencoder.logger import PARSER, setup_logger
+from vgg16autoencoder.arg_parser import PARSER
+from vgg16autoencoder.logger import setup_logger
 
 
 args = PARSER.parse_args()
