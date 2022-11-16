@@ -6,18 +6,18 @@ import torchvision
 
 from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
 from vgg16autoencoder.constants import NORM_MEAN, NORM_STD
+from vgg16autoencoder.logger import LOGGER
 from vgg16autoencoder import PATH_TO_WEIGHTS
 from vgg16st.transforms import WhiteningColoring
 
 
 # Regex pattern for matching the user input
 DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
-# TO_TENSOR = torchvision.transforms.ToTensor()
-# NORMALIZATION = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
 
 
 def st_main(args):
     # Set up the transforms
+    LOGGER.info("Setting up transforms.")
     img_transform = torchvision.transforms.Compose(
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
@@ -29,6 +29,7 @@ def st_main(args):
     wct = WhiteningColoring(args.alpha, method=args.method)
 
     # Determine the depths of the model
+    LOGGER.info("Calculating depths.")
     depths = args.depth
     model_depths = []
 
@@ -42,6 +43,7 @@ def st_main(args):
                 model_depths.append(num)
 
     # Create the encoders and decoders
+    LOGGER.info("Creating encoders and decoders")
     encoders = [VGG16Encoder(d) for d in model_depths]
     decoders = [
         VGG16Decoder.from_state_dict(
@@ -55,10 +57,12 @@ def st_main(args):
     ]
 
     # Load the images
+    LOGGER.info("Loading images.")
     content_img = img_transform(Image.open(args.content).convert("RGB"))
     style_img = img_transform(Image.open(args.style).convert("RGB"))
 
     # Load stuff into the GPU
+    LOGGER.info("Sending data to GPU.")
     if args.gpu:
         for m in encoders:
             m.cuda()
@@ -69,8 +73,11 @@ def st_main(args):
         style_img.to("cuda")
 
     # Apply each stylization
+    LOGGER.info("Applying stylization.")
     content = content_img
     for encoder, decoder in zip(encoders, decoders):
+        LOGGER.debug(f"Stylization level {encoder.depth}")
+
         # Encode
         content_feats = encoder(content)
         style_feats = encoder(style_img)
@@ -86,6 +93,7 @@ def st_main(args):
     content = content.cpu()
 
     # Image plotting
+    LOGGER.info("Plotting images.")
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(content_img)
     ax[1].imshow(content)
