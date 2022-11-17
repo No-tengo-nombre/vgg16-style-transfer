@@ -88,6 +88,7 @@ def st_main(args):
         # Encode
         content_feats = encoder(content)
         style_feats = encoder(style_img)
+        LOGGER.info(f"Content feats {content_feats.shape}, style feats {style_feats.shape}.")
 
         # Stylize
         stylized_feats = wct(content_feats, style_feats)
