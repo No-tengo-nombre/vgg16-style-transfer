@@ -48,6 +48,7 @@ def st_main(args):
             model_depths.extend(range(int(groups[1]), 6))
         if groups[0] == "":
             model_depths.append(int(groups[1]))
+    LOGGER.info(f"Depths to use: {model_depths}.")
 
     # Create the encoders and decoders
     LOGGER.info("Creating encoders and decoders")
