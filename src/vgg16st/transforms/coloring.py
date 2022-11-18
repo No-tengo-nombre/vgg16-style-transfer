@@ -1,8 +1,9 @@
 import torch
 
+from vgg16autoencoder import EPSILON
+from vgg16autoencoder.logger import LOGGER
 from vgg16st.exceptions import MethodException
 from vgg16st.functions import parameters_from_image
-from vgg16autoencoder import EPSILON
 
 
 class Coloring:
@@ -18,6 +19,7 @@ class Coloring:
 
 
 def __coloring_paper(content, parameter_content=None):
+    LOGGER.info("Calculating coloring with paper method.")
     if parameter_content is None:
         c, _, vals, vecs = parameters_from_image(content)
     else:
@@ -31,7 +33,9 @@ def __coloring_paper(content, parameter_content=None):
     reduced_dimension = (vals > EPSILON).sum()
     vals = vals[:reduced_dimension]
     vecs = vecs[:, :reduced_dimension]
+    vals_mat = torch.diag(vals).pow(-0.5)
 
     # Apply the coloring transformation
-    colored = vecs @ torch.diag(vals).pow(0.5) @ vecs.T @ c_mat
+    LOGGER.info(f"Coloring shapes {vecs.shape}, {vals_mat.shape}, {c_mat.shape}")
+    colored = vecs @ vals_mat @ vecs.T @ c_mat
     return colored.reshape(*c_shape)
