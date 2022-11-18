@@ -5,8 +5,7 @@ import re
 import torchvision
 
 from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
-from vgg16common import NORM_MEAN, NORM_STD
-from vgg16common import LOGGER
+from vgg16common import LOGGER, NORM_MEAN, NORM_STD
 from vgg16autoencoder import PATH_TO_WEIGHTS
 from vgg16st.transforms import WhiteningColoring
 

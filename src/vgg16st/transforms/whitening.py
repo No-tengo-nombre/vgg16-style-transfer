@@ -2,8 +2,7 @@ import torch
 
 from vgg16st.exceptions import MethodException
 from vgg16st.functions import parameters_from_image
-from vgg16common import LOGGER
-from vgg16common import EPSILON
+from vgg16common import LOGGER, EPSILON
 
 
 class Whitening:
