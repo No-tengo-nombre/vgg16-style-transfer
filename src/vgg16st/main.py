@@ -17,6 +17,7 @@ DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
 def st_main(args):
     # Set up the transforms
     LOGGER.info("Setting up transforms.")
+    none_transform = torchvision.transforms.ToTensor()
     img_transform = torchvision.transforms.Compose((
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
@@ -65,8 +66,12 @@ def st_main(args):
 
     # Load the images
     LOGGER.info("Loading images.")
-    content_img = img_transform(Image.open(args.content).convert("RGB"))
-    style_img = img_transform(Image.open(args.style).convert("RGB"))
+    # content_img = img_transform(Image.open(args.content).convert("RGB"))
+    # style_img = img_transform(Image.open(args.style).convert("RGB"))
+    untransformed_content_img = none_transform(Image.open(args.content).convert("RGB"))
+    untransformed_style_img = none_transform(Image.open(args.style).convert("RGB"))
+    content_img = img_transform(untransformed_content_img)
+    style_img = img_transform(untransformed_style_img)
 
     # Load stuff into the GPU
     LOGGER.info("Sending data to GPU.")
@@ -93,17 +98,19 @@ def st_main(args):
         # Stylize
         stylized_feats = wct(content_feats, style_feats)
         stylized_img = decoder(stylized_feats)
-        content = inverse_normalization(stylized_img)
+        # content = inverse_normalization(stylized_img)
+        content = stylized_img
 
     # Send images to the CPU
     content_img = content_img.detach().cpu()
     style_img = style_img.detach().cpu()
-    content = content.detach().cpu()
+    # content = content.detach().cpu()
+    content = inverse_normalization(content).detach().cpu()
 
     # Image plotting
     LOGGER.info("Generating the images.")
     fig, ax = plt.subplots(1, 3)
-    ax[0].imshow(content_img.permute(1, 2, 0))
+    ax[0].imshow(untransformed_content_img.permute(1, 2, 0))
     ax[1].imshow(content.permute(1, 2, 0))
     ax[2].imshow(style_img.permute(1, 2, 0))
 
