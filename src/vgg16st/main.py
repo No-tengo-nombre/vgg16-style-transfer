@@ -83,7 +83,7 @@ def st_main(args):
     LOGGER.info("Applying stylization.")
     content = content_img
     for encoder, decoder in zip(encoders, decoders):
-        LOGGER.debug(f"Stylization level {encoder.depth}")
+        LOGGER.info(f"Stylization level {encoder.depth}")
 
         # Encode
         content_feats = encoder(content)
