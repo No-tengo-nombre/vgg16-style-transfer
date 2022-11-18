@@ -74,6 +74,17 @@ def st_main(args):
     content_img = normalization(untransformed_content_img)
     style_img = normalization(untransformed_style_img)
 
+    # # Load stuff into the GPU
+    # LOGGER.info("Sending data to GPU.")
+    # if args.gpu:
+    #     for m in encoders:
+    #         m.cuda()
+    #     for m in decoders:
+    #         m.cuda()
+
+    #     content_img.to("cuda")
+    #     style_img.to("cuda")
+
     # Load stuff into the GPU
     LOGGER.info("Sending data to GPU.")
     if args.gpu:
@@ -82,38 +93,65 @@ def st_main(args):
         for m in decoders:
             m.cuda()
 
+        untransformed_content_img.to("cuda")
+        untransformed_style_img.to("cuda")
         content_img.to("cuda")
         style_img.to("cuda")
 
+    # # Apply each stylization
+    # LOGGER.info("Applying stylization.")
+    # content = content_img
+    # for encoder, decoder in zip(encoders, decoders):
+    #     LOGGER.info(f"Stylization level {encoder.depth}")
+
+    #     # Encode
+    #     content_feats = encoder(content)
+    #     style_feats = encoder(style_img)
+    #     LOGGER.info(f"Content feats {content_feats.shape}, style feats {style_feats.shape}.")
+
+    #     # Stylize
+    #     stylized_feats = wct(content_feats, style_feats)
+    #     stylized_img = decoder(stylized_feats)
+    #     # content = inverse_normalization(stylized_img)
+    #     content = stylized_img
+
+    # # Send images to the CPU
+    # content_img = content_img.detach().cpu()
+    # style_img = style_img.detach().cpu()
+    # # content = content.detach().cpu()
+    # content = inverse_normalization(content).detach().cpu()
+
     # Apply each stylization
     LOGGER.info("Applying stylization.")
-    content = content_img
+    content = untransformed_content_img
     for encoder, decoder in zip(encoders, decoders):
         LOGGER.info(f"Stylization level {encoder.depth}")
 
         # Encode
-        content_feats = encoder(content)
+        content_feats = encoder(normalization(content))
         style_feats = encoder(style_img)
         LOGGER.info(f"Content feats {content_feats.shape}, style feats {style_feats.shape}.")
 
         # Stylize
         stylized_feats = wct(content_feats, style_feats)
         stylized_img = decoder(stylized_feats)
-        # content = inverse_normalization(stylized_img)
-        content = stylized_img
+        content = inverse_normalization(stylized_img)
+        # content = stylized_img
 
     # Send images to the CPU
+    untransformed_content_img = untransformed_content_img.detach().cpu()
     content_img = content_img.detach().cpu()
+    untransformed_style_img = untransformed_style_img.detach().cpu()
     style_img = style_img.detach().cpu()
-    # content = content.detach().cpu()
-    content = inverse_normalization(content).detach().cpu()
+    content = content.detach().cpu()
+    # content = inverse_normalization(content).detach().cpu()
 
     # Image plotting
     LOGGER.info("Generating the images.")
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(untransformed_content_img.permute(1, 2, 0))
     ax[1].imshow(content.permute(1, 2, 0))
-    ax[2].imshow(style_img.permute(1, 2, 0))
+    ax[2].imshow(untransformed_style_img.permute(1, 2, 0))
 
     ax[0].set_title("Original image")
     ax[1].set_title("Stylized image")
