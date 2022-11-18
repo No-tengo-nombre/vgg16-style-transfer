@@ -1,7 +1,6 @@
 from vgg16common import LOGGER
 from vgg16st.transforms.whitening import Whitening
 from vgg16st.transforms.coloring import Coloring
-# from vgg16st.functions import parameters_from_image
 from vgg16st.functions import center_tensor
 
 
@@ -28,7 +27,6 @@ class WhiteningColoring:
             blending = alpha
 
         # Apply the wct
-        # _, style_mean, *_ = parameters_from_image(style)
         _, style_mean = center_tensor(style)
         LOGGER.info(f"Applying whitening, input shape {content.shape}, parameter shape {None}.")
         whitened_content = self.whitening(content)

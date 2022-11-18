@@ -2,7 +2,6 @@ import torch
 
 from vgg16common import EPSILON, LOGGER
 from vgg16st.exceptions import MethodException
-# from vgg16st.functions import parameters_from_image
 from vgg16st.functions import center_tensor, cov_eigvals
 
 
@@ -20,11 +19,6 @@ class Whitening:
 
 def __whitening_paper(content, parameter_content=None):
     LOGGER.info("Calculating whitening with paper method.")
-    # if parameter_content is None:
-    #     c, _, vals, vecs = parameters_from_image(content)
-    # else:
-    #     c, _, vals, vecs = parameters_from_image(parameter_content)
-
     c, _ = center_tensor(content)
 
     if parameter_content is None:
