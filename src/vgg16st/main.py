@@ -22,7 +22,7 @@ def st_main(args):
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
     ))
-    normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
+    normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD)
     inverse_normalization = torchvision.transforms.Normalize(
         -NORM_MEAN / NORM_STD,
         1 / NORM_STD
