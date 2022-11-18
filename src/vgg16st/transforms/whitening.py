@@ -25,7 +25,8 @@ def __whitening_paper(content, parameter_content=None):
         c, _, vals, vecs = parameters_from_image(parameter_content)
 
     # Resize the matrix
-    c_shape = c.shape
+    # c_shape = c.shape
+    c_shape = content.shape
     c_mat = c.reshape(c_shape[0], -1)
 
     # We remove negative values and zeros
