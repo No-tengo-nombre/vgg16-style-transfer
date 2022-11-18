@@ -28,9 +28,9 @@ class WhiteningColoring:
 
         # Apply the wct
         _, style_mean, *_ = parameters_from_image(style)
-        LOGGER.info("Applying whitening.")
+        LOGGER.info(f"Applying whitening, input shape {content.shape}, parameter shape {None}.")
         whitened_content = self.whitening(content)
-        LOGGER.info("Applying coloring.")
+        LOGGER.info(f"Applying coloring, input shape {whitened_content.shape}, parameter shape {style.shape}.")
         colored_content = self.coloring(whitened_content, style)
 
         # Readjust by the style means and blend
