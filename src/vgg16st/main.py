@@ -101,7 +101,7 @@ def st_main(args):
     content = content.detach().cpu()
 
     # Image plotting
-    LOGGER.info("Plotting images.")
+    LOGGER.info("Generating the images.")
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(content_img.permute(1, 2, 0))
     ax[1].imshow(content.permute(1, 2, 0))
@@ -112,7 +112,9 @@ def st_main(args):
     ax[2].set_title("Style image")
 
     if args.save:
+        LOGGER.info("Saving the transferred image.")
         fig.savefig(args.save, bbox_inches="tight")
 
     if args.plot:
+        LOGGER.info("Showing the transferred image.")
         plt.show()
