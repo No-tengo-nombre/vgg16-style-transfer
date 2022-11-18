@@ -96,9 +96,9 @@ def st_main(args):
         content = inverse_normalization(stylized_img)
 
     # Send images to the CPU
-    content_img = content_img.cpu()
-    style_img = style_img.cpu()
-    content = content.cpu()
+    content_img = content_img.detach().cpu()
+    style_img = style_img.detach().cpu()
+    content = content.detach().cpu()
 
     # Image plotting
     LOGGER.info("Plotting images.")
