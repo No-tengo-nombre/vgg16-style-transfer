@@ -35,7 +35,7 @@ class WhiteningColoring:
 
         # Readjust by the style means and blend
         LOGGER.info("Readjusting stylized image.")
-        stylized_image = colored_content + style_mean.reshape(1, 1, -1).T
+        stylized_image = colored_content + style_mean.reshape(-1, 1, 1)
 
         LOGGER.info(f"Blending. Stylized shape: {stylized_image.shape}, content shape: {content.shape}.")
         blended_image = blending * stylized_image + (1 - blending) * content
