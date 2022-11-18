@@ -1,7 +1,7 @@
 from torch import nn
 from torchvision import models
 
-from vgg16autoencoder.logger import LOGGER
+from vgg16common import LOGGER
 
 
 class VGG16Encoder(nn.Module):

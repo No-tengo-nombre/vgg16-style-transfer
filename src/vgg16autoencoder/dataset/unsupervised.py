@@ -3,7 +3,7 @@ import os
 import numpy as np
 from PIL import Image
 
-from vgg16autoencoder.logger import LOGGER
+from vgg16common import LOGGER
 
 
 class UnsupervisedImageDataset(torch.utils.data.Dataset):

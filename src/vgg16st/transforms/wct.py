@@ -1,4 +1,4 @@
-from vgg16autoencoder.logger import LOGGER
+from vgg16common import LOGGER
 from vgg16st.transforms.whitening import Whitening
 from vgg16st.transforms.coloring import Coloring
 from vgg16st.functions import parameters_from_image

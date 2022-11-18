@@ -8,8 +8,8 @@ def train_main(args):
     from vgg16autoencoder.model import VGG16Encoder, VGG16Decoder
     from vgg16autoencoder.loss import VGG16DecoderLossFunction
     from vgg16autoencoder.training import train_model, show_curves
-    from vgg16autoencoder.logger import LOGGER
-    from vgg16autoencoder.constants import NORM_MEAN, NORM_STD
+    from vgg16common import LOGGER
+    from vgg16common import NORM_MEAN, NORM_STD
     from vgg16autoencoder import PATH_TO_WEIGHTS
 
 
