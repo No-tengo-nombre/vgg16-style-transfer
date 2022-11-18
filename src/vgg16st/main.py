@@ -103,9 +103,9 @@ def st_main(args):
     # Image plotting
     LOGGER.info("Plotting images.")
     fig, ax = plt.subplots(1, 3)
-    ax[0].imshow(content_img)
-    ax[1].imshow(content)
-    ax[2].imshow(style_img)
+    ax[0].imshow(content_img.permute(1, 2, 0))
+    ax[1].imshow(content.permute(1, 2, 0))
+    ax[2].imshow(style_img.permute(1, 2, 0))
 
     ax[0].set_title("Original image")
     ax[1].set_title("Stylized image")
