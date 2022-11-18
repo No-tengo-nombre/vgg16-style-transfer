@@ -31,6 +31,7 @@ def __whitening_paper(content, parameter_content=None):
 
     # We remove negative values and zeros
     reduced_dimension = (vals > EPSILON).sum()
+    LOGGER.info(f"Whitening reduced dimension {reduced_dimension}")
     vals = vals[:reduced_dimension]
     vecs = vecs[:, :reduced_dimension]
     vals_mat = torch.diag(vals).pow(-0.5)
