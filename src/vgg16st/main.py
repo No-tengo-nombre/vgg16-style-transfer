@@ -22,6 +22,7 @@ def st_main(args):
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
     ))
+    normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
     inverse_normalization = torchvision.transforms.Normalize(
         -NORM_MEAN / NORM_STD,
         1 / NORM_STD
@@ -70,8 +71,8 @@ def st_main(args):
     # style_img = img_transform(Image.open(args.style).convert("RGB"))
     untransformed_content_img = none_transform(Image.open(args.content).convert("RGB"))
     untransformed_style_img = none_transform(Image.open(args.style).convert("RGB"))
-    content_img = img_transform(untransformed_content_img)
-    style_img = img_transform(untransformed_style_img)
+    content_img = normalization(untransformed_content_img)
+    style_img = normalization(untransformed_style_img)
 
     # Load stuff into the GPU
     LOGGER.info("Sending data to GPU.")
