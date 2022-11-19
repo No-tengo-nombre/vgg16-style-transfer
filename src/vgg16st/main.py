@@ -8,7 +8,6 @@ from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
 from vgg16common import LOGGER, NORM_MEAN, NORM_STD
 from vgg16autoencoder import PATH_TO_WEIGHTS
 from vgg16st.transforms import WhiteningColoring
-from vgg16st.functions import center_tensor
 
 
 # Regex pattern for matching the user input
@@ -18,11 +17,7 @@ DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
 def st_main(args):
     # Set up the transforms
     LOGGER.info("Setting up transforms.")
-    none_transform = torchvision.transforms.ToTensor()
-    img_transform = torchvision.transforms.Compose((
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
-    ))
+    TO_TENSOR = torchvision.transforms.ToTensor()
     normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD)
     inverse_normalization = torchvision.transforms.Normalize(
         -NORM_MEAN / NORM_STD,
@@ -61,8 +56,8 @@ def st_main(args):
 
     # Load the images
     LOGGER.info("Loading images.")
-    untransformed_content_img = none_transform(Image.open(args.content).convert("RGB"))
-    untransformed_style_img = none_transform(Image.open(args.style).convert("RGB"))
+    untransformed_content_img = TO_TENSOR(Image.open(args.content).convert("RGB"))
+    untransformed_style_img = TO_TENSOR(Image.open(args.style).convert("RGB"))
     content_img = normalization(untransformed_content_img)
     style_img = normalization(untransformed_style_img)
 
