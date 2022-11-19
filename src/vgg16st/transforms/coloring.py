@@ -35,7 +35,7 @@ def __coloring_paper(content, parameter_content=None):
     LOGGER.info(f"Coloring reduced dimension {reduced_dimension}")
     vals = vals[:reduced_dimension]
     vecs = vecs[:, :reduced_dimension]
-    vals_mat = torch.diag(vals).pow(-0.5)
+    vals_mat = torch.diag(vals.pow(0.5))
 
     # Apply the coloring transformation
     LOGGER.info(f"Coloring shapes {vecs.shape}, {vals_mat.shape}, {c_mat.shape}")
