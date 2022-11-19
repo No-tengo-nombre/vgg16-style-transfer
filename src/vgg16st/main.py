@@ -85,7 +85,7 @@ def st_main(args):
 
         # Stylize
         stylized_feats = wct(content_feats, style_feats)
-        stylized_img = decoder(stylized_feats)
+        stylized_img = decoder(stylized_feats.reshape(1, *stylized_feats.shape))[0]
         content = stylized_img
 
     # Send images to the CPU
