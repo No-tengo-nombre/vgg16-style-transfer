@@ -1,4 +1,5 @@
 import torch
+from torchvision.transforms import Normalize
 
 
 def center_tensor(image):
@@ -20,3 +21,10 @@ def cov_eigvals(image):
     vecs = vecs.real
 
     return vals, vecs
+
+
+def minmax_normalize(image):
+    min_vals = image.min(axis=1).values.min(axis=1).values
+    max_vals = image.max(axis=1).values.max(axis=1).values
+    normalization = Normalize(min_vals, max_vals - min_vals)
+    return normalization(image)
