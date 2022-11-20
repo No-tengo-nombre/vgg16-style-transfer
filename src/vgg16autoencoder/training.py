@@ -142,8 +142,6 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 }
             }
             if save_weights:
-                # now = datetime.now()
-                # file_name = os.path.join(PATH_TO_WEIGHTS, f"{now.year}{now.month:02}{now.day:02}_{now.hour:02}{now.minute:02}{now.second:02}.pt")
                 file_name = os.path.join(PATH_TO_WEIGHTS, save_weights)
                 model.save_model(file_name, data_dict)
 
