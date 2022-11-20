@@ -41,18 +41,22 @@ def st_main(args):
     LOGGER.info(f"Depths to use: {model_depths}.")
 
     # Create the encoders and decoders
+    encoders = []
+    decoders = []
     LOGGER.info("Creating encoders and decoders")
-    encoders = [VGG16Encoder(d) for d in model_depths]
-    decoders = [
-        VGG16Decoder.from_state_dict(
-            depth=d,
-            path=os.path.join(
-                PATH_TO_WEIGHTS,
-                f"best{d}.pt"
+    for d in model_depths:
+        encoders.append(VGG16Encoder(depth=d, use_gpu=args.gpu))
+        decoders.append(
+            VGG16Decoder.from_state_dict(
+                depth=d,
+                path=os.path.join(
+                    PATH_TO_WEIGHTS,
+                    f"best{d}.pt",
+                ),
+                use_gpu=args.gpu,
             )
         )
-        for d in model_depths
-    ]
+
 
     # Load the images
     LOGGER.info("Loading images.")
@@ -64,13 +68,8 @@ def st_main(args):
     # Load stuff into the GPU
     LOGGER.info("Sending data to GPU.")
     if args.gpu:
-        for m in encoders:
-            m.cuda()
-        for m in decoders:
-            m.cuda()
-
-        content_img.to("cuda")
-        style_img.to("cuda")
+        content_img = content_img.to("cuda")
+        style_img = style_img.to("cuda")
 
     # Apply each stylization
     LOGGER.info("Applying stylization.")
