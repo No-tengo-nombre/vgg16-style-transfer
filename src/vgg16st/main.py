@@ -1,20 +1,20 @@
-import matplotlib.pyplot as plt
-import os
-from PIL import Image
-import re
-import torchvision
-
-from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
-from vgg16common import LOGGER, NORM_MEAN, NORM_STD
-from vgg16autoencoder import PATH_TO_WEIGHTS
-from vgg16st.transforms import WhiteningColoring
-
-
-# Regex pattern for matching the user input
-DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
-
-
 def st_main(args):
+    import matplotlib.pyplot as plt
+    import os
+    from PIL import Image
+    import re
+    import torchvision
+
+    from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
+    from vgg16common import LOGGER, NORM_MEAN, NORM_STD
+    from vgg16autoencoder import PATH_TO_WEIGHTS
+    from vgg16st.transforms import WhiteningColoring
+
+
+    # Regex pattern for matching the user input
+    DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
+
+
     # Set up the transforms
     LOGGER.info("Setting up transforms.")
     TO_TENSOR = torchvision.transforms.ToTensor()
