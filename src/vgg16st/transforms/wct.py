@@ -1,7 +1,7 @@
 from vgg16common import LOGGER
 from vgg16st.transforms.whitening import Whitening
 from vgg16st.transforms.coloring import Coloring
-from vgg16st.functions import center_tensor
+from vgg16st.utils import center_tensor
 
 
 class WhiteningColoring:

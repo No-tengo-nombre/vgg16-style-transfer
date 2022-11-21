@@ -2,7 +2,7 @@ import torch
 
 from vgg16common import EPSILON, LOGGER
 from vgg16st.exceptions import MethodException
-from vgg16st.functions import center_tensor, cov_eigvals
+from vgg16st.utils import center_tensor, cov_eigvals
 
 
 class Coloring:
