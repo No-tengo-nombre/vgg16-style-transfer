@@ -28,7 +28,7 @@ def __coloring_paper(content, parameter_content=None):
 
     # Resize the matrix
     c_shape = c.shape
-    c_mat = c.reshape(c_shape[0], -1)
+    c = c.reshape(c_shape[0], -1)
 
     # We remove negative values and zeros
     reduced_dimension = (vals > EPSILON).sum()
@@ -38,6 +38,6 @@ def __coloring_paper(content, parameter_content=None):
     vals_mat = torch.diag(vals.pow(0.5))
 
     # Apply the coloring transformation
-    LOGGER.info(f"Coloring shapes {vecs.shape}, {vals_mat.shape}, {c_mat.shape}")
-    colored = vecs @ vals_mat @ vecs.T @ c_mat
+    LOGGER.info(f"Coloring shapes {vecs.shape}, {vals_mat.shape}, {c.shape}")
+    colored = vecs @ vals_mat @ vecs.T @ c
     return colored.reshape(*c_shape)

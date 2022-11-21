@@ -1,3 +1,5 @@
+import torch
+
 from vgg16common import LOGGER
 from vgg16st.transforms.whitening import Whitening
 from vgg16st.transforms.coloring import Coloring
@@ -27,7 +29,7 @@ class WhiteningColoring:
             blending = alpha
 
         # Apply the wct
-        _, style_mean = center_tensor(style)
+        style_mean = torch.mean(style, (1, 2))
         LOGGER.info(f"Applying whitening, input shape {content.shape}, parameter shape {None}.")
         whitened_content = self.whitening(content)
         LOGGER.info(f"Applying coloring, input shape {whitened_content.shape}, parameter shape {style.shape}.")

@@ -5,9 +5,8 @@ from torchvision.transforms import Normalize
 def center_tensor(image):
     # Calculate the mean for every channel
     mean_val = torch.mean(image, (1, 2))
-    c = image - mean_val.reshape(-1, 1, 1)
+    return image - mean_val.reshape(-1, 1, 1), mean_val
 
-    return c, mean_val
 
 def cov_eigvals(image):
     channels, height, width = image.shape
@@ -15,10 +14,8 @@ def cov_eigvals(image):
     # Calculate eigenvalues and eigenvectors of covariance matrix
     cov_mat = (image.reshape(channels, -1) @ image.reshape(channels, -1).T) / (height * width - 1)
     vals, vecs = torch.linalg.eig(cov_mat)
-    vals = vals.real
-    vecs = vecs.real
 
-    return vals, vecs
+    return vals.real, vecs.real
 
 
 def minmax_normalize(image):

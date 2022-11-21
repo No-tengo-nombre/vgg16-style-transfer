@@ -1,3 +1,4 @@
+import torch
 import torchvision
 import os
 
@@ -37,30 +38,19 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False, alpha=
     style_img = normalization(style)
 
     # Load stuff into the GPU
-    LOGGER.info("Sending data to GPU.")
     if use_gpu:
+        LOGGER.info("Sending data to GPU.")
         content_img = content_img.to("cuda")
         style_img = style_img.to("cuda")
 
     # Apply each stylization
     LOGGER.info("Applying stylization.")
-    content = content_img
     for encoder, decoder in zip(encoders, decoders):
         LOGGER.info(f"Stylization level {encoder.depth}")
+        stylized_feats = wct(encoder(content_img), encoder(style_img))
 
-        # Encode
-        content_feats = encoder(content)
-        style_feats = encoder(style_img)
-        LOGGER.info(f"Content feats {content_feats.shape}, style feats {style_feats.shape}.")
+        # Apply the decoder
+        LOGGER.info("Decoding styled features.")
+        content_img = decoder(stylized_feats.reshape(1, *stylized_feats.shape))[0]
 
-        # Stylize
-        stylized_feats = wct(content_feats, style_feats)
-        stylized_img = decoder(stylized_feats.reshape(1, *stylized_feats.shape))[0]
-        content = stylized_img
-
-    # Send images to the CPU
-    content_img = content_img.detach().cpu()
-    style_img = style_img.detach().cpu()
-    content = inverse_normalization(content).detach().cpu()
-
-    return content
+    return inverse_normalization(content_img).detach().cpu()
