@@ -3,11 +3,9 @@ from torchvision.transforms import Normalize
 
 
 def center_tensor(image):
-    content_clone = image.clone()
-
     # Calculate the mean for every channel
-    mean_val = torch.mean(content_clone, (1, 2))
-    c = content_clone - mean_val.reshape(-1, 1, 1)
+    mean_val = torch.mean(image, (1, 2))
+    c = image - mean_val.reshape(-1, 1, 1)
 
     return c, mean_val
 
