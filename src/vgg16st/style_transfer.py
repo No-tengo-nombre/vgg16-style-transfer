@@ -1,4 +1,5 @@
 import torchvision
+from tqdm import tqdm
 import os
 
 from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
@@ -35,7 +36,7 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
 
     # Apply each stylization
     LOGGER.info("Applying stylization.")
-    for d in depths:
+    for d in tqdm(depths, "Transfering style"):
         encoder = VGG16Encoder(depth=d, use_gpu=use_gpu)
         decoder = VGG16Decoder.from_state_dict(
             depth=d,
