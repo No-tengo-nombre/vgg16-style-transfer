@@ -50,6 +50,7 @@ def st_main(args):
         use_gpu=args.gpu,
         alpha=args.alpha,
         method=args.method,
+        square_size=args.square_size,
     )
 
     # Image plotting

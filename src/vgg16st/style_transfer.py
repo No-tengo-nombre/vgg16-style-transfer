@@ -3,16 +3,13 @@ import os
 
 from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
 from vgg16autoencoder import PATH_TO_WEIGHTS
-from vgg16common import LOGGER, NORM_MEAN, NORM_STD
+from vgg16common import LOGGER, NORM_MEAN, NORM_STD, DEFAULT_ST_SQUARE_SIZE
 from vgg16st.transforms import WhiteningColoring
 from vgg16st.vendor import wct
 
 
-DEFAULT_SQUARE_SIZE = 512
-
-
 def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
-    alpha=1, method="paper", square_size=DEFAULT_SQUARE_SIZE):
+    alpha=1, method="paper", square_size=DEFAULT_ST_SQUARE_SIZE):
     RESIZE_SHAPE = (square_size, square_size)
     content_shape = content.shape[-2:]
 

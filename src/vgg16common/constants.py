@@ -6,3 +6,6 @@ NORM_STD = np.array([0.229, 0.224, 0.225])
 
 # Small number
 EPSILON = 1e-30
+
+# Style transfer
+DEFAULT_ST_SQUARE_SIZE = 512

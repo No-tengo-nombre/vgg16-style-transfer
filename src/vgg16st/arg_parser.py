@@ -1,6 +1,7 @@
 import argparse
 
 from vgg16st.main import st_main
+from vgg16common import DEFAULT_ST_SQUARE_SIZE
 
 
 desc_str = """Perform a style transfer using the VGG16 network."""
@@ -99,6 +100,13 @@ st_parser.add_argument(
     "--gpu",
     action="store_true",
     help="use the gpu for the style transfer",
+)
+st_parser.add_argument(
+    "--square-size",
+    action="store",
+    type=int,
+    default=DEFAULT_ST_SQUARE_SIZE,
+    help="square size to use for the content and style image",
 )
 st_parser.add_argument(
     "--method",
