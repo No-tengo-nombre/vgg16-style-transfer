@@ -8,7 +8,17 @@ from vgg16st.transforms import WhiteningColoring
 from vgg16st.vendor import wct
 
 
-def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False, alpha=1, method="paper"):
+DEFAULT_SQUARE_SIZE = 512
+
+
+def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
+    alpha=1, method="paper", square_size=DEFAULT_SQUARE_SIZE):
+    RESIZE_SHAPE = (square_size, square_size)
+    content_shape = content.shape[-2:]
+
+    eval_resize = torchvision.transforms.Resize(RESIZE_SHAPE)
+    content_resize = torchvision.transforms.Resize(content_shape)
+
     normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD)
     inverse_normalization = torchvision.transforms.Normalize(
         -NORM_MEAN / NORM_STD,
@@ -17,8 +27,8 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False, alpha=
     # wct = WhiteningColoring(alpha, method=method)
 
     # Normalizing images
-    content_img = normalization(content)
-    style_img = normalization(style)
+    content_img = eval_resize(normalization(content))
+    style_img = eval_resize(normalization(style))
 
     # Load stuff into the GPU
     if use_gpu:
@@ -47,4 +57,4 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False, alpha=
         # content_img = decoder(stylized_feats.reshape(1, *stylized_feats.shape))[0]
         content_img = decoder(stylized_feats)[0]
 
-    return inverse_normalization(content_img).detach().cpu()
+    return content_resize(inverse_normalization(content_img).detach()).cpu()
