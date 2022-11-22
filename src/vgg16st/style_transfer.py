@@ -36,7 +36,7 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
 
     # Apply each stylization
     LOGGER.info("Applying stylization.")
-    for d in tqdm(depths, "Transfering style"):
+    for d in tqdm(depths, "Transferring style"):
         encoder = VGG16Encoder(depth=d, use_gpu=use_gpu)
         decoder = VGG16Decoder.from_state_dict(
             depth=d,
