@@ -4,7 +4,7 @@ from vgg16common import LOGGER
 
 
 def wct(alpha, cf, sf, s1f=None, beta=None):
-    LOGGER.warning("The use of this WCT function is not recommended.")
+    LOGGER.info("Using vendor WCT function.")
 
     # content image whitening
     cf = cf.double()
