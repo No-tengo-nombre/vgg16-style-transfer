@@ -38,18 +38,25 @@ subparser = PARSER.add_subparsers(dest="subparser_name")
 ### Style transfer parser ###
 st_epilog_str = """\
 The way the program interprets the depths is the following:
- - If a list of numbers is given, they are interpreted as the
-   the depths to use. This also applies to the case that a single
-   number is given.
- - If a single number is given and is preppended with "-" or "+",
-   then it has special behaviour. If it is preppended with "-",
-   then all depths up to and including that one are used. If it
-   is preppended with "+", then all depths from and including
-   that one are used.
+ -  If a list of numbers is given, they are interpreted as the
+    the depths to use. This also applies to the case that a single
+    number is given.
+ -  If a single number is given and is preppended or appended with
+    "-" or "+", then it has special behaviour.
+     -  If it is preppended with "-", then all depths up to and including
+        that one are used.
+     -  If it is preppended with "+", then all depths from the max down to
+        the specified one (including it) are used.
+     -  If it is appended with "-", it uses the depths from the specified
+        number down to 1.
+     -  If it is appended with "+", it uses depths from the specified one
+        up to the max.
 
-   Examples
-    - `vgg16st st ... -D -3` means use depths 1, 2 and 3.
-    - `vgg16st st ... -D +3` means use depths 3, 4 and 5.
+    Examples
+     -  `vgg16st st ... -D -3` means use depths 1, 2 and 3.
+     -  `vgg16st st ... -D +3` means use depths 5, 4 and 3.
+     -  `vgg16st st ... -D 3-` means use depths 3, 2 and 1.
+     -  `vgg16st st ... -D 3+` means use depths 3, 4 and 5.
 """
 st_parser = subparser.add_parser("style_transfer", help="perform a style transfer", aliases=("st",))
 st_parser.set_defaults(main_func=st_main)
