@@ -71,7 +71,7 @@ st_parser.add_argument(
     action="store",
     nargs="+",
     type=str,
-    default=["-5"],
+    default=["5-"],
     help="layers to use for the transfer",
 )
 st_parser.add_argument(

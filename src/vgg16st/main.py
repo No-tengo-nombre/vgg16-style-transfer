@@ -13,7 +13,7 @@ def st_main(args):
 
 
     # Regex pattern for matching the user input
-    DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)")
+    DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)([\+\-]?)")
 
 
     # Set up the transforms
@@ -35,10 +35,16 @@ def st_main(args):
         groups = DEPTH_PATTERN.search(d).groups()
         if groups[0] == "-":
             model_depths.extend(range(1, int(groups[1]) + 1))
-        if groups[0] == "+":
-            model_depths.extend(range(int(groups[1]), 6))
-        if groups[0] == "":
-            model_depths.append(int(groups[1]))
+        elif groups[0] == "+":
+            model_depths.extend(range(5, int(groups[1]) - 1, -1))
+        elif groups[0] == "":
+            if groups[2] == "-":
+                model_depths.extend(range(int(groups[1]), 0, -1))
+            elif groups[2] == "+":
+                model_depths.extend(range(int(groups[1]), 6))
+            else:
+                model_depths.append(int(groups[1]))
+
     LOGGER.info(f"Depths to use: {model_depths}.")
 
     content_img = TO_TENSOR(Image.open(args.content).convert("RGB"))
