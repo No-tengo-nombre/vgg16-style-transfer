@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "vgg16autoencoder"
+name = "el4106-style-transfer"
 version = "0.1.0"
