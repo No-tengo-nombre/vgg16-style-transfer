@@ -8,5 +8,5 @@ testpaths = [
     "tests",
 ]
 pythonpath = [
-    "src",
+    "py_src",
 ]
