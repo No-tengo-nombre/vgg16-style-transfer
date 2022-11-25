@@ -176,3 +176,7 @@ cython_debug/
 data/
 logs/
 .vscode/
+
+# Added by cargo
+
+/target
