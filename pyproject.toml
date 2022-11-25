@@ -1,6 +1,8 @@
 [build-system]
-requires = ["setuptools>=42.0", "wheel"]
-build-backend = "setuptools.build_meta"
+# requires = ["setuptools>=42.0", "wheel"]
+# build-backend = "setuptools.build_meta"
+requires = ["maturin>=0.14,<0.15"]
+build-backend = "maturin"
 
 [tool.pytest.ini_options]
 addopts = "--cov=slapping"
@@ -8,5 +10,50 @@ testpaths = [
     "tests",
 ]
 pythonpath = [
-    "src",
+    "python",
 ]
+
+[tool.maturin]
+python-source = "pysrc"
+
+[project]
+name = "vgg16_style_transfer"
+description = "Style transfer implemented using the VGG16 network"
+author = "Cristóbal Allendes"
+license = {file = "LICENSE"}
+platforms = "supported-platforms"
+version = "0.3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+# These options can be changed according to your project
+[tools.setuptools]
+packages = [
+    "vgg16autoencoder",
+    "vgg16autoencoder.dataset",
+    "vgg16autoencoder.loss",
+    "vgg16autoencoder.model",
+    "vgg16autoencoder.weights",
+    "vgg16common",
+    "vgg16kv",
+    "vgg16kv.app",
+    "vgg16st",
+    "vgg16st.transforms",
+    "vgg16st.vendor",
+]
+package-dir = "pysrc"
+zip-safe = "no"
+
+[options.package_data]
+vgg16autoencoder = "py.typed"
+# vgg16autoencoder.weights = "best*"
+vgg16common = "py.typed"
+vgg16st = "py.typed"
+
