@@ -106,7 +106,7 @@ class VGG19Encoder(nn.Module):
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
         model = cls(*args, **kwargs)
-        model.load_state_dict(torch.load(path))
+        model.model.load_state_dict(torch.load(path))
         return model
 
     def forward(self, x):
