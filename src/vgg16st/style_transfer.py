@@ -9,7 +9,8 @@ from vgg16autoencoder.model import (
     VGG19Encoder,
 )
 from vgg16autoencoder import PATH_TO_WEIGHTS
-from vgg16common.logger import LOGGER, NORM_MEAN, NORM_STD, DEFAULT_ST_SQUARE_SIZE
+from vgg16common.logger import LOGGER
+from vgg16common.constants import NORM_MEAN, NORM_STD, DEFAULT_ST_SQUARE_SIZE
 from vgg16st.exceptions import ModelException
 from vgg16st.vendor import wct
 
