@@ -1,5 +1,6 @@
 import argparse
 
+from vgg16autoencoder import BASE_DIR
 from vgg16autoencoder.main import train_main, eval_main
 
 
@@ -16,7 +17,7 @@ PARSER.add_argument(
 PARSER.add_argument(
     "--log",
     action="store",
-    default="vgg16autoencoder/logs",
+    default=f"{BASE_DIR}/logs",
     help="generate log files for the current run in the given directory",
 )
 PARSER.add_argument(

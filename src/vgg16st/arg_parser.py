@@ -1,5 +1,6 @@
 import argparse
 
+from vgg16st import BASE_DIR
 from vgg16st.main import st_main
 from vgg16common.constants import DEFAULT_ST_SQUARE_SIZE
 
@@ -17,7 +18,7 @@ PARSER.add_argument(
 PARSER.add_argument(
     "--log",
     action="store",
-    default="vgg16st/logs",
+    default=f"{BASE_DIR}/logs",
     help="generate log files for the current run in the given directory",
 )
 PARSER.add_argument(
