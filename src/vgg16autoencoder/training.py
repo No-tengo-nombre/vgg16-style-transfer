@@ -25,7 +25,7 @@ def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
 
 
 def evaluate(val_loader, model, encoder, criterion, use_gpu):
-    LOGGER.info("Evaluating model.")
+    LOGGER.info("Evaluating model")
     cumulative_loss = 0
 
     for x_val, y_val in val_loader:
@@ -38,7 +38,7 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
 
         cumulative_loss += loss.item()
 
-    LOGGER.debug(f"Validation loss: {cumulative_loss / len(val_loader):.4f}.")
+    LOGGER.debug(f"Validation loss: {cumulative_loss / len(val_loader):.4f}")
     return cumulative_loss / len(val_loader)
 
 
@@ -59,7 +59,7 @@ def train_model(
     never_save=False,
     start_epoch=0,
 ):
-    LOGGER.info("Training model.")
+    LOGGER.info("Training model")
     if use_gpu:
         model = model.cuda()
         encoder = encoder.cuda()
@@ -68,7 +68,7 @@ def train_model(
         loader_kwargs = {}
 
     # Dataloaders
-    LOGGER.info("Generating dataloaders.")
+    LOGGER.info("Generating dataloaders")
     train_loader = VGG16DecoderImageDataloader(
         train_dataset,
         batch_size=batch_size,
@@ -100,7 +100,7 @@ def train_model(
 
     # Initialize the values to display them
 
-    LOGGER.info("Starting training.")
+    LOGGER.info("Starting training")
     for epoch in range(epochs):
         # Initialize the optimizer per epoch
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
@@ -178,14 +178,14 @@ def train_model(
                 ) as f:
                     best_model = toml.load(f)
                 if float(best_model["final_losses"]["validation"]) > val_loss:
-                    LOGGER.warning("Saving new best model.")
+                    LOGGER.warning("Saving new best model")
                     model.save_model(
                         os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"),
                         data_dict,
                     )
             except FileNotFoundError:
                 LOGGER.warning(
-                    "Best model not found (maybe it was deleted?). Saving it anyways."
+                    "Best model not found (maybe it was deleted?). Saving it anyways"
                 )
                 model.save_model(
                     os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"), data_dict
@@ -197,7 +197,7 @@ def train_model(
 
 
 def show_curves(curves):
-    LOGGER.info("Showing training curves.")
+    LOGGER.info("Showing training curves")
     fig, ax = plt.subplots(1, 1, figsize=(13, 5))
     fig.set_facecolor("white")
 

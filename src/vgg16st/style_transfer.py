@@ -41,12 +41,12 @@ def transfer_style(
 
     # Load stuff into the GPU
     if use_gpu:
-        LOGGER.info("Sending data to GPU.")
+        LOGGER.info("Sending data to GPU")
         content_img = content_img.to("cuda")
         style_img = style_img.to("cuda")
 
     # Apply each stylization
-    LOGGER.info("Applying stylization.")
+    LOGGER.info("Applying stylization")
     for d in tqdm(depths, "Transferring style"):
         if model == "vgg16":
             encoder = VGG16Encoder(depth=d, use_gpu=use_gpu)
@@ -85,7 +85,7 @@ def transfer_style(
         )
 
         # Apply the decoder
-        LOGGER.info("Decoding styled features.")
+        LOGGER.info("Decoding styled features")
         content_img = decoder(stylized_feats)[0]
 
     return content_resize(inverse_normalization(content_img).detach()).cpu()

@@ -7,7 +7,7 @@ from vgg16common import LOGGER
 
 class VGG16DecoderLossFunction(nn.Module):
     def __init__(self, weight=1, show_progress=False, show_images=False, use_gpu=False):
-        LOGGER.info("Initializing loss function.")
+        LOGGER.info("Initializing loss function")
         super().__init__()
         self.weight = weight
         self.show_progress = show_progress

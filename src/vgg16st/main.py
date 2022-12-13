@@ -11,11 +11,11 @@ def st_main(args):
     DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)([\+\-]?)")
 
     # Set up the transforms
-    LOGGER.info("Setting up transforms.")
+    LOGGER.info("Setting up transforms")
     TO_TENSOR = torchvision.transforms.ToTensor()
 
     # Determine the depths of the model
-    LOGGER.info("Calculating depths.")
+    LOGGER.info("Calculating depths")
     depths = args.depth
     model_depths = []
 
@@ -33,7 +33,7 @@ def st_main(args):
             else:
                 model_depths.append(int(groups[1]))
 
-    LOGGER.info(f"Depths to use: {model_depths}.")
+    LOGGER.info(f"Depths to use: {model_depths}")
 
     content_img = TO_TENSOR(Image.open(args.content).convert("RGB"))
     style_img = TO_TENSOR(Image.open(args.style).convert("RGB"))
@@ -49,7 +49,7 @@ def st_main(args):
     )
 
     # Image plotting
-    LOGGER.info("Generating the images.")
+    LOGGER.info("Generating the images")
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(content_img.permute(1, 2, 0))
     ax[1].imshow(content.permute(1, 2, 0))
@@ -60,9 +60,9 @@ def st_main(args):
     ax[2].set_title("Style image")
 
     if args.save:
-        LOGGER.info("Saving the transferred image.")
+        LOGGER.info("Saving the transferred image")
         fig.savefig(args.save, bbox_inches="tight")
 
     if args.plot:
-        LOGGER.info("Showing the transferred image.")
+        LOGGER.info("Showing the transferred image")
         plt.show()

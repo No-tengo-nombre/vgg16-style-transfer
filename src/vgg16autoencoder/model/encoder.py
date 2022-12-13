@@ -7,7 +7,7 @@ from vgg16common import LOGGER
 
 class VGG16Encoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
-        LOGGER.info(f"Initializing VGG16 encoder (depth: {depth}, use_gpu: {use_gpu}).")
+        LOGGER.info(f"Initializing VGG16 encoder (depth: {depth}, use_gpu: {use_gpu})")
         self.depth = depth
         self.use_gpu = use_gpu
         super().__init__()
@@ -26,7 +26,7 @@ class VGG16Encoder(nn.Module):
             5: 26,
         }
         self.model = all_layers[: indices[depth] + 1]
-        LOGGER.info(f"Encoder layers\n{self.model}.")
+        LOGGER.debug(f"Encoder layers\n{self.model}")
 
     def forward(self, x):
         return self.model(x)
@@ -34,7 +34,7 @@ class VGG16Encoder(nn.Module):
 
 class VGG19Encoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
-        LOGGER.info(f"Initializing VGG19 encoder (depth: {depth}, use_gpu: {use_gpu}).")
+        LOGGER.info(f"Initializing VGG19 encoder (depth: {depth}, use_gpu: {use_gpu})")
         self.depth = depth
         self.use_gpu = use_gpu
         super().__init__()
@@ -101,13 +101,14 @@ class VGG19Encoder(nn.Module):
             5: 43,
         }
         self.model = all_layers[: indices[depth] + 1]
-        LOGGER.info(f"Encoder layers\n{self.model}.")
+        LOGGER.debug(f"Encoder layers\n{self.model}")
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
         LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.model.load_state_dict(torch.load(path))
+        LOGGER.debug("Finished loading model")
         return model
 
     def forward(self, x):

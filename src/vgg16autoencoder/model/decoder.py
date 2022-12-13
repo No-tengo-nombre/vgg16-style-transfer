@@ -7,7 +7,7 @@ from vgg16common import LOGGER
 
 class VGG16Decoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
-        LOGGER.info(f"Initializing decoder (depth: {depth}, use_gpu: {use_gpu}).")
+        LOGGER.info(f"Initializing decoder (depth: {depth}, use_gpu: {use_gpu})")
         super().__init__()
         self.depth = depth
         self.use_gpu = use_gpu
@@ -51,20 +51,21 @@ class VGG16Decoder(nn.Module):
             5: 0,
         }
         self.model = all_layers[indices[depth] :]
-        LOGGER.info(f"Decoder layers\n{self.model}.")
+        LOGGER.debug(f"Decoder layers\n{self.model}")
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
         LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.load_state_dict(torch.load(path))
+        LOGGER.info("Finished loading model")
         return model
 
     def forward(self, x):
         return self.model(x)
 
     def save_model(self, path, data_dict=None):
-        LOGGER.info(f"Saving model in {path}.")
+        LOGGER.info(f"Saving model in {path}")
         self.eval()
         torch.save(self.state_dict(), path)
 
@@ -72,13 +73,13 @@ class VGG16Decoder(nn.Module):
         # directory as the weights.
         if data_dict is not None:
             with open(f"{'.'.join(path.split('.')[:-1])}.toml", "w") as f:
-                LOGGER.info(f"Saving data in {'.'.join(path.split('.')[:-1])}.toml.")
+                LOGGER.info(f"Saving data in {'.'.join(path.split('.')[:-1])}.toml")
                 toml.dump(data_dict, f)
 
 
 class VGG19Decoder(nn.Module):
     def __init__(self, depth=5, use_gpu=False):
-        LOGGER.info(f"Initializing VGG19 decoder (depth: {depth}, use_gpu: {use_gpu}).")
+        LOGGER.info(f"Initializing VGG19 decoder (depth: {depth}, use_gpu: {use_gpu})")
         self.depth = depth
         self.use_gpu = use_gpu
         super().__init__()
@@ -143,13 +144,14 @@ class VGG19Decoder(nn.Module):
             5: 0,
         }
         self.model = all_layers[indices[depth] :]
-        LOGGER.info(f"Decoder layers\n{self.model}.")
+        LOGGER.debug(f"Decoder layers\n{self.model}")
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
         LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.model.load_state_dict(torch.load(path))
+        LOGGER.info("Finished loading model")
         return model
 
     def forward(self, x):

@@ -20,7 +20,7 @@ class Whitening:
 
 
 def __whitening_paper(content, parameter_content=None):
-    LOGGER.info("Calculating whitening with paper method.")
+    LOGGER.info("Calculating whitening with paper method")
     c, _ = center_tensor(content)
 
     if parameter_content is None:

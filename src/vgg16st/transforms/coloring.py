@@ -20,7 +20,7 @@ class Coloring:
 
 
 def __coloring_paper(content, parameter_content=None):
-    LOGGER.info("Calculating coloring with paper method.")
+    LOGGER.info("Calculating coloring with paper method")
     c, _ = center_tensor(content)
 
     if parameter_content is None:

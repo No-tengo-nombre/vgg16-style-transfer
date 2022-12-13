@@ -13,7 +13,7 @@ def train_main(args):
 
     LOGGER.info(
         f"Running in training mode with {int(args.epochs)} epochs and batch sizes {int(args.batch_size[0])}\
-        for training and {int(args.batch_size[1])} for validation."
+        for training and {int(args.batch_size[1])} for validation"
     )
     LEARNING_RATE = 5e-4
     BATCH_SIZE = int(args.batch_size[0])
@@ -22,7 +22,7 @@ def train_main(args):
     USE_GPU = True
 
     # Define the transform for the data
-    LOGGER.info("Setting up transforms for dataset.")
+    LOGGER.info("Setting up transforms for dataset")
     transform = torchvision.transforms.Compose(
         [
             torchvision.transforms.ToTensor(),
@@ -32,11 +32,11 @@ def train_main(args):
         ]
     )
 
-    LOGGER.info("Creating encoder.")
+    LOGGER.info("Creating encoder")
     vgg_encoder = VGG16Encoder(depth=args.depth, use_gpu=USE_GPU)
 
     # Create the datasets
-    LOGGER.info("Creating dataset.")
+    LOGGER.info("Creating dataset")
     transformed_ds = VGG16DecoderImageDataset.from_dir(
         "data/test2017",
         encoder=vgg_encoder,
@@ -49,7 +49,7 @@ def train_main(args):
     if args.reduced is not None:
         reduced_size = args.reduced
 
-        LOGGER.debug(f"Creating reduced dataset with size {reduced_size}.")
+        LOGGER.debug(f"Creating reduced dataset with size {reduced_size}")
         reduced_ds = VGG16DecoderImageDataset.from_dir(
             "data/test2017",
             encoder=vgg_encoder,
@@ -62,10 +62,10 @@ def train_main(args):
     criterion = VGG16DecoderLossFunction(1, use_gpu=USE_GPU)
 
     if args.from_weights or args.from_weights is None:
-        LOGGER.info("Initializing decoder from weights.")
+        LOGGER.info("Initializing decoder from weights")
         path = args.from_weights
         if path is None:
-            LOGGER.info("Setting decoder weights to the best ones.")
+            LOGGER.info("Setting decoder weights to the best ones")
             path = os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt")
 
         try:
@@ -79,7 +79,7 @@ def train_main(args):
         except FileNotFoundError as e:
             if path == os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt"):
                 LOGGER.warning(
-                    "Best model was not found (maybe it was deleted?). Initializing from a scratch."
+                    "Best model was not found (maybe it was deleted?). Initializing from a scratch"
                 )
                 vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
                 start_curves = None
@@ -88,7 +88,7 @@ def train_main(args):
                 raise e
 
     else:
-        LOGGER.info("Initializing decoder from scratch.")
+        LOGGER.info("Initializing decoder from scratch")
         vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
         start_curves = None
 

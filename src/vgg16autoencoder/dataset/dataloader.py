@@ -6,7 +6,7 @@ from vgg16common import LOGGER
 
 class VGG16DecoderImageDataloader:
     def __init__(self, dataset, batch_size, use_gpu=False):
-        LOGGER.info("Initializing dataloader.")
+        LOGGER.info("Initializing dataloader")
         self.dataset = dataset
         self.batch_size = batch_size
         self.use_gpu = use_gpu

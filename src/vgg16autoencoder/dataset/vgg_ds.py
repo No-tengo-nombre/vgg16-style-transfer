@@ -25,7 +25,7 @@ class VGG16DecoderImageDataset(UnsupervisedImageDataset):
         return features, image
 
     def split(self, train_size):
-        LOGGER.info(f"Splitting dataset with train size {train_size}.")
+        LOGGER.info(f"Splitting dataset with train size {train_size}")
         total_size = len(self.image_names)
         train_idx = np.random.default_rng().choice(
             total_size, int(total_size * train_size), replace=False
