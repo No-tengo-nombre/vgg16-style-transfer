@@ -14,7 +14,6 @@ class VGG16Decoder(nn.Module):
         all_layers = nn.Sequential(
             nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
-
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
@@ -22,7 +21,6 @@ class VGG16Decoder(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
-
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
@@ -30,13 +28,11 @@ class VGG16Decoder(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
-
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
             nn.Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
-
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
             nn.ReLU(inplace=True),
@@ -54,7 +50,7 @@ class VGG16Decoder(nn.Module):
             4: 2,
             5: 0,
         }
-        self.model = all_layers[indices[depth]:]
+        self.model = all_layers[indices[depth] :]
         LOGGER.info(f"Decoder layers\n{self.model}.")
 
     @classmethod
@@ -88,51 +84,51 @@ class VGG19Decoder(nn.Module):
         all_layers = nn.Sequential(
             # Depth 5
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512,512,(3, 3)),
+            nn.Conv2d(512, 512, (3, 3)),
             nn.ReLU(),
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512,512,(3, 3)),
+            nn.Conv2d(512, 512, (3, 3)),
             nn.ReLU(),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512,512,(3, 3)),
+            nn.Conv2d(512, 512, (3, 3)),
             nn.ReLU(),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512,512,(3, 3)),
+            nn.Conv2d(512, 512, (3, 3)),
             nn.ReLU(),
             # Depth 4
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512,256,(3, 3)),
+            nn.Conv2d(512, 256, (3, 3)),
             nn.ReLU(),
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(256,256,(3, 3)),
+            nn.Conv2d(256, 256, (3, 3)),
             nn.ReLU(),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(256,256,(3, 3)),
+            nn.Conv2d(256, 256, (3, 3)),
             nn.ReLU(),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(256,256,(3, 3)),
+            nn.Conv2d(256, 256, (3, 3)),
             nn.ReLU(),
             # Depth 3
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(256,128,(3, 3)),
+            nn.Conv2d(256, 128, (3, 3)),
             nn.ReLU(),
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(128,128,(3, 3)),
+            nn.Conv2d(128, 128, (3, 3)),
             nn.ReLU(),
             # Depth 2
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(128,64,(3, 3)),
+            nn.Conv2d(128, 64, (3, 3)),
             nn.ReLU(),
             nn.UpsamplingNearest2d(scale_factor=2),
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(64,64,(3, 3)),
+            nn.Conv2d(64, 64, (3, 3)),
             nn.ReLU(),
             # Depth 1
             nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(64,3,(3, 3)),
+            nn.Conv2d(64, 3, (3, 3)),
         )
         if use_gpu:
             all_layers = all_layers.to("cuda")
@@ -145,7 +141,7 @@ class VGG19Decoder(nn.Module):
             4: 13,
             5: 0,
         }
-        self.model = all_layers[indices[depth]:]
+        self.model = all_layers[indices[depth] :]
         LOGGER.info(f"Decoder layers\n{self.model}.")
 
     @classmethod
