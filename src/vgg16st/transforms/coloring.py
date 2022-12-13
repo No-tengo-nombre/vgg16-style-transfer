@@ -11,7 +11,9 @@ class Coloring:
         try:
             self.__function = globals()[f"__coloring_{method}"]
         except KeyError as e:
-            raise MethodException(f"Coloring method {method} could not be found.") from e
+            raise MethodException(
+                f"Coloring method {method} could not be found."
+            ) from e
 
     def __call__(self, *args, **kwargs):
         return self.__function(*args, **kwargs)

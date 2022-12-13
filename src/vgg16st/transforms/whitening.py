@@ -11,7 +11,9 @@ class Whitening:
         try:
             self.__function = globals()[f"__whitening_{method}"]
         except KeyError as e:
-            raise MethodException(f"Whitening method {method} could not be found.") from e
+            raise MethodException(
+                f"Whitening method {method} could not be found."
+            ) from e
 
     def __call__(self, *args, **kwargs):
         return self.__function(*args, **kwargs)

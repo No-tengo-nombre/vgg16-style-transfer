@@ -32,11 +32,15 @@ class VGG16DecoderLossFunction(nn.Module):
                 for i in range(input_image.detach().shape[0]):
                     fig, ax = plt.subplots(1, 2)
                     ax[0].imshow(input_image.detach()[i].permute(1, 2, 0).cpu().numpy())
-                    ax[1].imshow(recon_image.detach()[i].permute(1, 2, 0).cpu().numpy() / torch.max(recon_image.detach().cpu()))
+                    ax[1].imshow(
+                        recon_image.detach()[i].permute(1, 2, 0).cpu().numpy()
+                        / torch.max(recon_image.detach().cpu())
+                    )
 
                     ax[0].set_title("Input image")
                     ax[1].set_title("Reconstructed image")
-            print(f"""
+            print(
+                f"""
                 \rLoss = {total_loss}
                 \r=========================
                 \rInput                  -> {input_image.shape}

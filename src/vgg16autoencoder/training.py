@@ -42,9 +42,23 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
     return cumulative_loss / len(val_loader)
 
 
-def train_model(model, train_dataset, val_dataset, epochs, criterion,
-                batch_size, validation_batch_size, lr, encoder, use_gpu=False, loader_kwargs=None,
-                save_weights=True, start_curves=None, never_save=False, start_epoch=0):
+def train_model(
+    model,
+    train_dataset,
+    val_dataset,
+    epochs,
+    criterion,
+    batch_size,
+    validation_batch_size,
+    lr,
+    encoder,
+    use_gpu=False,
+    loader_kwargs=None,
+    save_weights=True,
+    start_curves=None,
+    never_save=False,
+    start_epoch=0,
+):
     LOGGER.info("Training model.")
     if use_gpu:
         model = model.cuda()
@@ -56,10 +70,16 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
     # Dataloaders
     LOGGER.info("Generating dataloaders.")
     train_loader = VGG16DecoderImageDataloader(
-        train_dataset, batch_size=batch_size, use_gpu=use_gpu, **loader_kwargs,
+        train_dataset,
+        batch_size=batch_size,
+        use_gpu=use_gpu,
+        **loader_kwargs,
     )
     val_loader = VGG16DecoderImageDataloader(
-        val_dataset, batch_size=validation_batch_size, use_gpu=use_gpu, **loader_kwargs,
+        val_dataset,
+        batch_size=validation_batch_size,
+        use_gpu=use_gpu,
+        **loader_kwargs,
     )
 
     # If start_curves is given it should be a dictionary with keys "train_loss"
@@ -102,7 +122,13 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 y_batch = y_batch.cuda()
 
             _, loss = train_step(
-                x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder,
+                x_batch,
+                y_batch,
+                model,
+                optimizer,
+                criterion,
+                use_gpu,
+                encoder,
             )
             cumulative_train_loss += loss.item()
             train_loss_count += 1
@@ -139,7 +165,7 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
                 "loss_evolution": {
                     "training": curves["training"],
                     "validation": curves["validation"],
-                }
+                },
             }
             if save_weights:
                 file_name = os.path.join(PATH_TO_WEIGHTS, save_weights)
@@ -147,15 +173,23 @@ def train_model(model, train_dataset, val_dataset, epochs, criterion,
 
             # Save it as best model if it is appropriate
             try:
-                with open(os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.toml"), "r") as f:
+                with open(
+                    os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.toml"), "r"
+                ) as f:
                     best_model = toml.load(f)
                 if float(best_model["final_losses"]["validation"]) > val_loss:
                     LOGGER.warning("Saving new best model.")
-                    model.save_model(os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"), data_dict)
+                    model.save_model(
+                        os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"),
+                        data_dict,
+                    )
             except FileNotFoundError:
-                LOGGER.warning("Best model not found (maybe it was deleted?). Saving it anyways.")
-                model.save_model(os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"), data_dict)
-
+                LOGGER.warning(
+                    "Best model not found (maybe it was deleted?). Saving it anyways."
+                )
+                model.save_model(
+                    os.path.join(PATH_TO_WEIGHTS, f"best{model.depth}.pt"), data_dict
+                )
 
     model = model.cpu()
 

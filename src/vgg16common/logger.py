@@ -10,6 +10,7 @@ log_fmt = logging.Formatter(
     datefmt="%Y-%m-%d|%H:%M:%S",
 )
 
+
 def setup_logger(quiet, debug, verbose, log_dir):
     global LOGGER
 

@@ -7,7 +7,6 @@ def st_main(args):
     from vgg16common import LOGGER
     from vgg16st.style_transfer import transfer_style
 
-
     # Regex pattern for matching the user input
     DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)([\+\-]?)")
 

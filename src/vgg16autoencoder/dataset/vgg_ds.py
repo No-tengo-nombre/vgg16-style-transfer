@@ -13,7 +13,9 @@ class VGG16DecoderImageDataset(UnsupervisedImageDataset):
         self.encoder = encoder
 
     def __getitem__(self, idx):
-        image = Image.open(os.path.join(self.img_dir, self.image_names[idx])).convert("RGB")
+        image = Image.open(os.path.join(self.img_dir, self.image_names[idx])).convert(
+            "RGB"
+        )
         if self.transform is not None:
             image = self.transform(image)
 
@@ -25,7 +27,9 @@ class VGG16DecoderImageDataset(UnsupervisedImageDataset):
     def split(self, train_size):
         LOGGER.info(f"Splitting dataset with train size {train_size}.")
         total_size = len(self.image_names)
-        train_idx = np.random.default_rng().choice(total_size, int(total_size * train_size), replace=False)
+        train_idx = np.random.default_rng().choice(
+            total_size, int(total_size * train_size), replace=False
+        )
         test_idx = np.delete(np.arange(total_size), train_idx)
 
         train_ds = VGG16DecoderImageDataset(

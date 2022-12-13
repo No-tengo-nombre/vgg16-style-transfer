@@ -105,5 +105,7 @@ train_parser.add_argument(
 
 
 ### Evaluation parser ###
-eval_parser = subparser.add_parser("eval", help="evaluate the encoder and decoder", aliases=("e"))
+eval_parser = subparser.add_parser(
+    "eval", help="evaluate the encoder and decoder", aliases=("e")
+)
 eval_parser.set_defaults(main_func=eval_main)

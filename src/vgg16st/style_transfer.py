@@ -2,15 +2,28 @@ import torchvision
 from tqdm import tqdm
 import os
 
-from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder, VGG19Decoder, VGG19Encoder
+from vgg16autoencoder.model import (
+    VGG16Decoder,
+    VGG16Encoder,
+    VGG19Decoder,
+    VGG19Encoder,
+)
 from vgg16autoencoder import PATH_TO_WEIGHTS
 from vgg16common import LOGGER, NORM_MEAN, NORM_STD, DEFAULT_ST_SQUARE_SIZE
 from vgg16st.exceptions import ModelException
 from vgg16st.vendor import wct
 
 
-def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
-    alpha=1, method="paper", model="vgg16", square_size=DEFAULT_ST_SQUARE_SIZE):
+def transfer_style(
+    content,
+    style,
+    depths=(1, 2, 3, 4, 5),
+    use_gpu=False,
+    alpha=1,
+    method="paper",
+    model="vgg16",
+    square_size=DEFAULT_ST_SQUARE_SIZE,
+):
     RESIZE_SHAPE = (square_size, square_size)
     content_shape = content.shape[-2:]
 
@@ -19,8 +32,7 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
 
     normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD)
     inverse_normalization = torchvision.transforms.Normalize(
-        -NORM_MEAN / NORM_STD,
-        1 / NORM_STD
+        -NORM_MEAN / NORM_STD, 1 / NORM_STD
     )
 
     # Normalizing images
@@ -68,7 +80,9 @@ def transfer_style(content, style, depths=(1, 2, 3, 4, 5), use_gpu=False,
         else:
             raise ModelException(f"Model {model} could not be found.")
         LOGGER.info(f"Stylization level {d}")
-        stylized_feats = wct(alpha, encoder(content_img).detach(), encoder(style_img).detach())
+        stylized_feats = wct(
+            alpha, encoder(content_img).detach(), encoder(style_img).detach()
+        )
 
         # Apply the decoder
         LOGGER.info("Decoding styled features.")

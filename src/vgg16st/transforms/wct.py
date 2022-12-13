@@ -7,7 +7,9 @@ from vgg16st.utils import center_tensor
 
 
 class WhiteningColoring:
-    def __init__(self, alpha=1, method="paper", whitening_kwargs=None, coloring_kwargs=None) -> None:
+    def __init__(
+        self, alpha=1, method="paper", whitening_kwargs=None, coloring_kwargs=None
+    ) -> None:
         self.method = method
         self.alpha = alpha
 
@@ -30,16 +32,22 @@ class WhiteningColoring:
 
         # Apply the wct
         style_mean = torch.mean(style, (1, 2))
-        LOGGER.info(f"Applying whitening, input shape {content.shape}, parameter shape {None}.")
+        LOGGER.info(
+            f"Applying whitening, input shape {content.shape}, parameter shape {None}."
+        )
         whitened_content = self.whitening(content)
-        LOGGER.info(f"Applying coloring, input shape {whitened_content.shape}, parameter shape {style.shape}.")
+        LOGGER.info(
+            f"Applying coloring, input shape {whitened_content.shape}, parameter shape {style.shape}."
+        )
         colored_content = self.coloring(whitened_content, style)
 
         # Readjust by the style means and blend
         LOGGER.info("Readjusting stylized image.")
         stylized_image = colored_content + style_mean.reshape(-1, 1, 1)
 
-        LOGGER.info(f"Blending. Stylized shape: {stylized_image.shape}, content shape: {content.shape}.")
+        LOGGER.info(
+            f"Blending. Stylized shape: {stylized_image.shape}, content shape: {content.shape}."
+        )
         blended_image = blending * stylized_image + (1 - blending) * content
 
         return blended_image

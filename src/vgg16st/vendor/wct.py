@@ -11,12 +11,14 @@ def wct(alpha, cf, sf, s1f=None, beta=None):
     c_channels, c_width, c_height = cf.size(0), cf.size(1), cf.size(2)
     cfv = cf.view(c_channels, -1)  # c x (h x w)
 
-    c_mean = torch.mean(cfv, 1) # perform mean for each row
-    c_mean = c_mean.unsqueeze(1).expand_as(cfv) # add dim and replicate mean on rows
-    cfv = cfv - c_mean # subtract mean element-wise
+    c_mean = torch.mean(cfv, 1)  # perform mean for each row
+    c_mean = c_mean.unsqueeze(1).expand_as(cfv)  # add dim and replicate mean on rows
+    cfv = cfv - c_mean  # subtract mean element-wise
 
-    c_covm = torch.mm(cfv, cfv.t()).div((c_width * c_height) - 1)  # construct covariance matrix
-    c_u, c_e, c_v = torch.svd(c_covm, some=False) # singular value decomposition
+    c_covm = torch.mm(cfv, cfv.t()).div(
+        (c_width * c_height) - 1
+    )  # construct covariance matrix
+    c_u, c_e, c_v = torch.svd(c_covm, some=False)  # singular value decomposition
 
     k_c = c_channels
     for i in range(c_channels):
@@ -41,7 +43,7 @@ def wct(alpha, cf, sf, s1f=None, beta=None):
     s_covm = torch.mm(sfv, sfv.t()).div((s_width * s_heigth) - 1)
     s_u, s_e, s_v = torch.svd(s_covm, some=False)
 
-    s_k = c_channels # same number of channels ad content features
+    s_k = c_channels  # same number of channels ad content features
     for i in range(c_channels):
         if s_e[i] < 0.00001:
             s_k = i
@@ -107,8 +109,9 @@ def wct_mask(cf, sf):
             k_c = i
             break
     c_d = (c_e[0:k_c]).pow(-0.5)
-    whitened = torch.mm(torch.mm(torch.mm(c_v[:, 0:k_c], torch.diag(c_d)), (c_v[:, 0:k_c].t())), cf)
-
+    whitened = torch.mm(
+        torch.mm(torch.mm(c_v[:, 0:k_c], torch.diag(c_d)), (c_v[:, 0:k_c].t())), cf
+    )
 
     sf = sf.double()
     sf_sizes = sf.size()
@@ -126,7 +129,9 @@ def wct_mask(cf, sf):
             s_k = i
             break
     s_d = (s_e[0:s_k]).pow(0.5)
-    ccsf = torch.mm(torch.mm(torch.mm(s_v[:, 0:s_k], torch.diag(s_d)), s_v[:, 0:s_k].t()), whitened)
+    ccsf = torch.mm(
+        torch.mm(torch.mm(s_v[:, 0:s_k], torch.diag(s_d)), s_v[:, 0:s_k].t()), whitened
+    )
 
     ccsf += s_mean.resize_as_(ccsf)
     return ccsf.float()

@@ -26,8 +26,8 @@ class VGG16DecoderImageDataloader:
     def __next__(self):
         if not self.indices:
             raise StopIteration
-        indices = self.indices[:self.batch_size]
-        self.indices = self.indices[self.batch_size:]
+        indices = self.indices[: self.batch_size]
+        self.indices = self.indices[self.batch_size :]
         result_feats = torch.zeros((self.batch_size, *self.feat_shape))
         result_image = torch.zeros((self.batch_size, *self.img_shape))
         for i, idx in enumerate(indices):

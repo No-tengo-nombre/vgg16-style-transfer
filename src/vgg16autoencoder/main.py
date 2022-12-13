@@ -11,9 +11,10 @@ def train_main(args):
     from vgg16common import LOGGER, NORM_MEAN, NORM_STD
     from vgg16autoencoder import PATH_TO_WEIGHTS
 
-
-    LOGGER.info(f"Running in training mode with {int(args.epochs)} epochs and batch sizes {int(args.batch_size[0])}\
-        for training and {int(args.batch_size[1])} for validation.")
+    LOGGER.info(
+        f"Running in training mode with {int(args.epochs)} epochs and batch sizes {int(args.batch_size[0])}\
+        for training and {int(args.batch_size[1])} for validation."
+    )
     LEARNING_RATE = 5e-4
     BATCH_SIZE = int(args.batch_size[0])
     VALIDATION_BATCH_SIZE = int(args.batch_size[1])
@@ -22,12 +23,14 @@ def train_main(args):
 
     # Define the transform for the data
     LOGGER.info("Setting up transforms for dataset.")
-    transform = torchvision.transforms.Compose([
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Resize(256),
-        torchvision.transforms.CenterCrop(224),
-        torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
-    ])
+    transform = torchvision.transforms.Compose(
+        [
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Resize(256),
+            torchvision.transforms.CenterCrop(224),
+            torchvision.transforms.Normalize(NORM_MEAN, NORM_STD),
+        ]
+    )
 
     LOGGER.info("Creating encoder.")
     vgg_encoder = VGG16Encoder(depth=args.depth, use_gpu=USE_GPU)
@@ -55,7 +58,6 @@ def train_main(args):
             size_limit=reduced_size,
         )
 
-
     # Loss function and model to train
     criterion = VGG16DecoderLossFunction(1, use_gpu=USE_GPU)
 
@@ -67,14 +69,18 @@ def train_main(args):
             path = os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt")
 
         try:
-            vgg_decoder = VGG16Decoder.from_state_dict(depth=args.depth, path=path, use_gpu=USE_GPU)
+            vgg_decoder = VGG16Decoder.from_state_dict(
+                depth=args.depth, path=path, use_gpu=USE_GPU
+            )
             with open(f"{'.'.join(path.split('.')[:-1])}.toml", "r") as f:
                 file = toml.load(f)
                 start_curves = file["loss_evolution"]
                 start_epoch = file["parameters"]["current_epoch"]
         except FileNotFoundError as e:
             if path == os.path.join(PATH_TO_WEIGHTS, f"best{vgg_encoder.depth}.pt"):
-                LOGGER.warning("Best model was not found (maybe it was deleted?). Initializing from a scratch.")
+                LOGGER.warning(
+                    "Best model was not found (maybe it was deleted?). Initializing from a scratch."
+                )
                 vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
                 start_curves = None
                 start_epoch = 0
@@ -85,7 +91,6 @@ def train_main(args):
         LOGGER.info("Initializing decoder from scratch.")
         vgg_decoder = VGG16Decoder(depth=args.depth, use_gpu=USE_GPU)
         start_curves = None
-
 
     # Flush the memory in cuda before running
     torch.cuda.empty_cache()
