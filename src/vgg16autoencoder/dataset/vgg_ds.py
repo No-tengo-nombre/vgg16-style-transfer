@@ -4,7 +4,7 @@ from PIL import Image
 import os
 
 from .unsupervised import UnsupervisedImageDataset
-from vgg16common import LOGGER
+from vgg16common.logger import LOGGER
 
 
 class VGG16DecoderImageDataset(UnsupervisedImageDataset):

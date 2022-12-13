@@ -1,7 +1,7 @@
 import argparse
 
 from vgg16st.main import st_main
-from vgg16common import DEFAULT_ST_SQUARE_SIZE
+from vgg16common.constants import DEFAULT_ST_SQUARE_SIZE
 
 
 desc_str = """Perform a style transfer using the VGG16 network."""

@@ -1,6 +1,6 @@
 import torch
 
-from vgg16common import LOGGER
+from vgg16common.logger import LOGGER
 
 
 def wct(alpha, cf, sf, s1f=None, beta=None):

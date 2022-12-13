@@ -1,6 +1,7 @@
 import torch
 
-from vgg16common import EPSILON, LOGGER
+from vgg16common.constants import EPSILON
+from vgg16common.logger import LOGGER
 from vgg16st.exceptions import MethodException
 from vgg16st.utils import center_tensor, cov_eigvals
 

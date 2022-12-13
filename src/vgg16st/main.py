@@ -4,7 +4,7 @@ def st_main(args):
     import re
     import torchvision
 
-    from vgg16common import LOGGER
+    from vgg16common.logger import LOGGER
     from vgg16st.style_transfer import transfer_style
 
     # Regex pattern for matching the user input

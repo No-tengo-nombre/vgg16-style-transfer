@@ -1,4 +1,4 @@
-from vgg16common import setup_logger
+from vgg16common.logger import setup_logger
 from vgg16autoencoder.arg_parser import PARSER
 
 

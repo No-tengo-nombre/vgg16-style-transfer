@@ -7,7 +7,7 @@ import os
 import toml
 
 from .dataset import VGG16DecoderImageDataloader
-from vgg16common import LOGGER
+from vgg16common.logger import LOGGER
 from vgg16autoencoder import PATH_TO_WEIGHTS
 
 
