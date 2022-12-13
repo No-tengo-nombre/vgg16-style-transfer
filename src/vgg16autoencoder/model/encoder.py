@@ -108,7 +108,7 @@ class VGG19Encoder(nn.Module):
         LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.model.load_state_dict(torch.load(path))
-        LOGGER.debug("Finished loading model")
+        LOGGER.info("Finished loading model")
         return model
 
     def forward(self, x):
