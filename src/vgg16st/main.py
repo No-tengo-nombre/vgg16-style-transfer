@@ -1,30 +1,19 @@
 def st_main(args):
     import matplotlib.pyplot as plt
-    import os
     from PIL import Image
     import re
     import torchvision
 
-    from vgg16autoencoder import PATH_TO_WEIGHTS
-    from vgg16autoencoder.model import VGG16Decoder, VGG16Encoder
-    from vgg16common import LOGGER, NORM_MEAN, NORM_STD
-    from vgg16st.transforms import WhiteningColoring
+    from vgg16common import LOGGER
     from vgg16st.style_transfer import transfer_style
 
 
     # Regex pattern for matching the user input
     DEPTH_PATTERN = re.compile(r"([\+\-]?)(\d*)([\+\-]?)")
 
-
     # Set up the transforms
     LOGGER.info("Setting up transforms.")
     TO_TENSOR = torchvision.transforms.ToTensor()
-    # normalization = torchvision.transforms.Normalize(NORM_MEAN, NORM_STD)
-    # inverse_normalization = torchvision.transforms.Normalize(
-    #     -NORM_MEAN / NORM_STD,
-    #     1 / NORM_STD
-    # )
-    # wct = WhiteningColoring(args.alpha, method=args.method)
 
     # Determine the depths of the model
     LOGGER.info("Calculating depths.")
@@ -57,6 +46,7 @@ def st_main(args):
         alpha=args.alpha,
         method=args.method,
         square_size=args.square_size,
+        model=args.model,
     )
 
     # Image plotting
