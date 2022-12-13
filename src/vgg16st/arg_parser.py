@@ -122,3 +122,10 @@ st_parser.add_argument(
     default="paper",
     help="method to use for the WCT",
 )
+st_parser.add_argument(
+    "--model",
+    action="store",
+    type=str,
+    default="vgg16",
+    help="use the specified model",
+)
