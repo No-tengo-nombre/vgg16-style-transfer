@@ -55,6 +55,7 @@ class VGG16Decoder(nn.Module):
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
+        LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.load_state_dict(torch.load(path))
         return model
@@ -146,6 +147,7 @@ class VGG19Decoder(nn.Module):
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
+        LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.model.load_state_dict(torch.load(path))
         return model

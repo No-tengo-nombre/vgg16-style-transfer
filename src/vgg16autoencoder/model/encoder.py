@@ -105,6 +105,7 @@ class VGG19Encoder(nn.Module):
 
     @classmethod
     def from_state_dict(cls, *args, path, **kwargs):
+        LOGGER.info(f"Loading model from {path}")
         model = cls(*args, **kwargs)
         model.model.load_state_dict(torch.load(path))
         return model
