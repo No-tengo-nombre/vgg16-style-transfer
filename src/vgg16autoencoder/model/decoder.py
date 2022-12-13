@@ -143,7 +143,7 @@ class VGG19Decoder(nn.Module):
             4: 13,
             5: 0,
         }
-        self.model = nn.Sequential(all_layers[indices[depth] :])
+        self.model = nn.Sequential(*all_layers[indices[depth] :])
         LOGGER.debug(f"Decoder layers\n{self.model}")
 
     @classmethod
