@@ -16,6 +16,7 @@ PARSER.add_argument(
 PARSER.add_argument(
     "--log",
     action="store",
+    default="vgg16autoencoder/logs",
     help="generate log files for the current run in the given directory",
 )
 PARSER.add_argument(
