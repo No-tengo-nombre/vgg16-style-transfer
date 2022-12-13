@@ -27,6 +27,7 @@ def train_step(x_batch, y_batch, model, optimizer, criterion, use_gpu, encoder):
 def evaluate(val_loader, model, encoder, criterion, use_gpu):
     LOGGER.info("Evaluating model")
     cumulative_loss = 0
+    val_loss_count = 0
 
     for x_val, y_val in val_loader:
         if use_gpu:
@@ -37,9 +38,10 @@ def evaluate(val_loader, model, encoder, criterion, use_gpu):
         loss = criterion(y_predicted, y_val, encoder)
 
         cumulative_loss += loss.item()
+        val_loss_count += 1
 
     LOGGER.debug(f"Validation loss: {cumulative_loss / len(val_loader):.4f}")
-    return cumulative_loss / len(val_loader)
+    return cumulative_loss / val_loss_count
 
 
 def train_model(
