@@ -24,6 +24,17 @@ class VGG16DecoderImageDataset(UnsupervisedImageDataset):
         features = self.encoder(image)
         return features, image
 
+    def get_image(self, idx):
+        image = Image.open(os.path.join(self.img_dir, self.image_names[idx])).convert(
+            "RGB"
+        )
+        if self.transform is not None:
+            image = self.transform(image)
+
+        if self.use_gpu:
+            image = image.to("cuda")
+        return image
+
     def split(self, train_size):
         LOGGER.info(f"Splitting dataset with train size {train_size}")
         total_size = len(self.image_names)
