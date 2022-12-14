@@ -136,6 +136,7 @@ def train_model(
             train_loss_count += 1
 
             train_loss = cumulative_train_loss / train_loss_count
+            train_loss /= batch_size
             progress_bar.desc = f"({epoch + 1 + start_epoch}/{epochs + start_epoch}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}"
 
         train_loss = cumulative_train_loss / train_loss_count
