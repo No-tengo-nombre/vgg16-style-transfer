@@ -139,11 +139,13 @@ def train_model(
             progress_bar.desc = f"({epoch + 1 + start_epoch}/{epochs + start_epoch}) Losses | Train {train_loss:.4e} - Val {val_loss:.4e}"
 
         train_loss = cumulative_train_loss / train_loss_count
+        train_loss /= batch_size
 
         # Run the evaluation
         del x_batch, y_batch
         torch.cuda.empty_cache()
         val_loss = evaluate(val_loader, model, encoder, criterion, use_gpu)
+        val_loss /= validation_batch_size
 
         # Save the curves
         curves["training"].append(train_loss)
