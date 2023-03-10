@@ -1,8 +1,4 @@
 # Style transfer using VGG16
-## EL4106 Computational Intelligence
-### Cristóbal Allendes
-### Tutor: Giovanni Castiglioni
-
 
 ## Description
 This project aims to use the VGG16 network [1][2] to solve the problem of style transfer, by using the features extracted from the convolutional layers, creating an encoder-decoder architecture, and applying White-Coloring Transforms at different levels of detail.
@@ -11,12 +7,12 @@ This project aims to use the VGG16 network [1][2] to solve the problem of style 
 ## Install instructions
 To install this package, clone the repo using
 ```
-git clone --recursive https://github.com/No-tengo-nombre/el4106-style-transfer
+git clone --recursive https://github.com/No-tengo-nombre/vgg16-style-transfer
 ```
 
 Then, navigate to the cloned repository and install it using pip. This corresponds to the following code
 ```
-cd ./el4106-style-transfer
+cd ./vgg16-style-transfer
 python -m pip install .
 ```
 
